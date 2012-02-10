@@ -5,5 +5,9 @@
         <file>images/logo.png</file>
         <file>images/minus.png</file>
         <file>images/next.png</file>
+        <file>qml/OrdersModel.qml</file>
+        <file>qml/OrdersDelegate.qml</file>
+        <file>qml/ItemsModel.qml</file>
+        <file>qml/ItemsDelegate.qml</file>
     </qresource>
 </RCC>

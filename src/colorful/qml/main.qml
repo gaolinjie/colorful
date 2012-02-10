@@ -37,7 +37,6 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: date.left; anchors.rightMargin: 15
             color: "white"
-            //font.family:
         }
 
         Text {
@@ -142,73 +141,15 @@ Rectangle {
             color: "grey"
         }
 
-        Image {
-            source: "qrc:/images/minus.png"
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.right: item1.left; anchors.rightMargin: 5
-        }
-
-        Rectangle {
-            id: item1
-            width: 515; height: 30
+        ListView {
+            id: ordersList
+            anchors.left: parent.left
             anchors.top: orderNO.bottom; anchors.topMargin: 20
-            anchors.left: parent.left; anchors.leftMargin: 43
-            radius: 8
-        }
-
-        Image {
-            id: next
-            source: "qrc:/images/next.png"
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: item1.right; anchors.leftMargin: -5
-        }
-
-        Text {
-            text: "01748293"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: orderNO.left;// anchors.leftMargin: 50
-            color: "black"
-        }
-
-        Text {
-            text: "18"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: seatNO.left;// anchors.leftMargin: 50
-            color: "black"
-        }
-
-        Text {
-            text: "2012-02-10"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: time.left;// anchors.leftMargin: 50
-            color: "black"
-        }
-
-        Text {
-            text: "80%"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: discount.left;// anchors.leftMargin: 50
-            color: "black"
-        }
-
-        Text {
-            text: "n/a"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: comment.left;// anchors.leftMargin: 50
-            color: "black"
-        }
-
-        Text {
-            text: "￥100"
-            font.pixelSize: 15
-            anchors.verticalCenter: item1.verticalCenter
-            anchors.left: total.left;// anchors.leftMargin: 50
-            color: "black"
+            width: 600; height:350
+            model: OrdersModel{}
+            delegate: OrdersDelegate{}
+            spacing: 5
+            smooth: true
         }
     }
 
@@ -249,7 +190,7 @@ Rectangle {
             text: "单价"
             font.pixelSize: 15
             anchors.top: name.top
-            anchors.left: name.right; anchors.leftMargin: 60
+            anchors.left: name.right; anchors.leftMargin: 80
             color: "grey"
         }
 
@@ -258,7 +199,7 @@ Rectangle {
             text: "份数"
             font.pixelSize: 15
             anchors.top: price.top
-            anchors.left: price.right; anchors.leftMargin: 50
+            anchors.left: price.right; anchors.leftMargin: 40
             color: "grey"
         }
 
@@ -267,8 +208,19 @@ Rectangle {
             text: "小计"
             font.pixelSize: 15
             anchors.top: number.top
-            anchors.left: number.right; anchors.leftMargin: 40
+            anchors.left: number.right; anchors.leftMargin: 30
             color: "grey"
+        }
+
+        ListView {
+            id: itemsList
+            anchors.left: parent.left
+            anchors.top: name.bottom; anchors.topMargin: 20
+            width: 355; height:350
+            model: ItemsModel{}
+            delegate: ItemsDelegate{}
+            spacing: 5
+            smooth: true
         }
     }
 }

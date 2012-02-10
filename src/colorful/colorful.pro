@@ -9,10 +9,18 @@ OTHER_FILES += \
     qml/main.qml \
     images/logo.png \
     images/minus.png \
-    images/next.png
+    images/next.png \
+    qml/OrdersModel.qml \
+    qml/OrdersDelegate.qml \
+    qml/ItemsModel.qml \
+    qml/ItemsDelegate.qml
 
 RESOURCES += \
     resource.qrc
+
+
+
+
 
 
 
