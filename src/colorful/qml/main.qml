@@ -24,7 +24,7 @@ Rectangle {
         Text {
             id: title
             text: "Colorful POS"
-            font.pixelSize: 20
+            font.pixelSize: 26
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: logo.right; anchors.leftMargin: 15
             color: "white"
@@ -32,7 +32,7 @@ Rectangle {
 
         Text {
             id: timer
-            text: "01:30"
+            text: "12:30"
             font.pixelSize: 30
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: date.left; anchors.rightMargin: 15
@@ -51,11 +51,12 @@ Rectangle {
 
     Rectangle {
         id: ordersRect
-        width: 600; height: 450
+        width: 600; height: 400
         anchors.top: header.bottom; anchors.topMargin: 20
         anchors.left: header.left; anchors.leftMargin: 25
         color: "#e3e3e3"
         radius: 10
+        smooth: true
 
         Rectangle {
             id: ordersRectLabel
@@ -89,7 +90,7 @@ Rectangle {
 
         Text {
             id: orderNO
-            text: "订单号"
+            text: "单号"
             font.pixelSize: 15
             anchors.top: parent.top; anchors.topMargin: 30
             anchors.left: parent.left; anchors.leftMargin: 50
@@ -98,10 +99,10 @@ Rectangle {
 
         Text {
             id: seatNO
-            text: "座位号"
+            text: "座位"
             font.pixelSize: 15
             anchors.top: orderNO.top
-            anchors.left: orderNO.right; anchors.leftMargin: 60
+            anchors.left: orderNO.right; anchors.leftMargin: 75
             color: "grey"
         }
 
@@ -110,7 +111,7 @@ Rectangle {
             text: "时间"
             font.pixelSize: 15
             anchors.top: seatNO.top
-            anchors.left: seatNO.right; anchors.leftMargin: 50
+            anchors.left: seatNO.right; anchors.leftMargin: 65
             color: "grey"
         }
 
@@ -145,7 +146,7 @@ Rectangle {
             id: ordersList
             anchors.left: parent.left
             anchors.top: orderNO.bottom; anchors.topMargin: 20
-            width: 600; height:350
+            width: 600; height:300
             model: OrdersModel{}
             delegate: OrdersDelegate{}
             spacing: 5
@@ -155,11 +156,12 @@ Rectangle {
 
     Rectangle {
         id: detailRect
-        width: 355; height: 450
+        width: 355; height: 400
         anchors.left: ordersRect.right; anchors.leftMargin: 20
         anchors.top: ordersRect.top
         color: "#e3e3e3"
         radius: 10
+        smooth: true
 
         Rectangle {
             id: detailRectLabel
@@ -223,4 +225,147 @@ Rectangle {
             smooth: true
         }
     }
+
+    Rectangle {
+        id: dashbord
+        width: 355; height: 150
+        anchors.left: detailRect.left
+        anchors.top: detailRect.bottom; anchors.topMargin: 20
+        color: "black"
+        radius: 10
+        smooth: true
+
+        gradient: Gradient {
+            GradientStop { position: 0.0;
+                           color: Qt.rgba(0.5,0.5,0.5,0.5) }
+            GradientStop { position: 0.7; color: "black" }
+            GradientStop { position: 1.0; color: "black" }
+        }
+
+        Text {
+            id: sumText
+            text: "合 计:           120.00"
+            anchors.top: parent.top; anchors.topMargin: 15
+            anchors.left: parent.left; anchors.leftMargin: 110
+            font.pixelSize: 16
+            color: "white"
+        }
+
+        Text {
+            id: discText
+            text: "折 扣:             38.00"
+            anchors.top: sumText.bottom; anchors.topMargin: 5
+            anchors.left: sumText.left
+            font.pixelSize: 16
+            color: "white"
+        }
+
+        Text {
+            id: totalText
+            text: "82.00"
+            anchors.bottom: parent.bottom; anchors.bottomMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pixelSize: 55
+            color: "white"
+        }
+    }
+
+    Button {
+        id: cashButton
+        width: dashbord.width; height: 40
+        anchors.left: dashbord.left
+        anchors.top: dashbord.bottom; anchors.topMargin: 10
+        color: 'green'
+        title: "现金收取"
+    }
+
+    Button {
+        id: creditButton
+        width: dashbord.width; height: 40
+        anchors.left: dashbord.left
+        anchors.top: cashButton.bottom; anchors.topMargin: 10
+        color: 'purple'
+        title: "刷卡支付"
+    }
+
+    Button {
+        id: openCashboxButton
+        width: 295; height: 40
+        anchors.left: ordersRect.left
+        anchors.top: ordersRect.bottom; anchors.topMargin: 20
+        title: "打开钱箱"
+    }
+
+    Button {
+        id: lockSystemButton
+        width: 295; height: 40
+        anchors.left: openCashboxButton.right; anchors.leftMargin: 10
+        anchors.top: openCashboxButton.top
+        title: "锁定系统"
+    }
+
+    Button {
+        id: settingsButton
+        width: 295; height: 40
+        anchors.left: ordersRect.left
+        anchors.top: openCashboxButton.bottom; anchors.topMargin: 10
+        title: "系统设置"
+    }
+
+    Button {
+        id: logoutButton
+        width: 295; height: 40
+        anchors.left: settingsButton.right; anchors.leftMargin: 10
+        anchors.top: settingsButton.top
+        title: "注销系统"
+    }
+
+    Button {
+        id: changeDiscountButton
+        width: 295; height: 40
+        anchors.left: ordersRect.left
+        anchors.top: settingsButton.bottom; anchors.topMargin: 10
+        title: "修改折扣"
+    }
+
+    Button {
+        id: accountingButton
+        width: 295; height: 40
+        anchors.left: changeDiscountButton.right; anchors.leftMargin: 10
+        anchors.top: changeDiscountButton.top
+        title: "核算收入"
+    }
+
+    Button {
+        id: testButton
+        width: 295; height: 40
+        anchors.left: ordersRect.left
+        anchors.top: changeDiscountButton.bottom; anchors.topMargin: 20
+        title: "设备测试"
+    }
+
+    Button {
+        id: printButton
+        width: 295; height: 40
+        anchors.left: testButton.right; anchors.leftMargin: 10
+        anchors.top: testButton.top
+        title: "打印收据"
+    }
+
+    Button {
+        id: analyseButton
+        width: 295; height: 40
+        anchors.left: ordersRect.left
+        anchors.top: testButton.bottom; anchors.topMargin: 10
+        title: "销售分析"
+    }
+
+    Button {
+        id: othersButton
+        width: 295; height: 40
+        anchors.left: analyseButton.right; anchors.leftMargin: 10
+        anchors.top: analyseButton.top
+        title: "其他项目"
+    }
+
 }

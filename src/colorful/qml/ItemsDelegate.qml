@@ -9,7 +9,7 @@ Component {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: {
+            onPressed: {
                 wraper.ListView.view.currentIndex = index
             }
         }
@@ -20,7 +20,8 @@ Component {
             radius: 8
             anchors.left: parent.left; anchors.leftMargin: 40
             anchors.verticalCenter: parent.verticalCenter
-            color: wraper.ListView.isCurrentItem ? "#78b117" : "white"
+            color: wraper.ListView.isCurrentItem ? "#f4a83d" : "white"
+            smooth: true
 
             Text {
                 id: nameText
@@ -50,8 +51,8 @@ Component {
             }
 
             Text {
-                id: amountText
-                text: amount
+                id: subtotalText
+                text: subtotal
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: numberText.right; anchors.leftMargin: 52

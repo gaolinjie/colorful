@@ -9,5 +9,12 @@
         <file>qml/OrdersDelegate.qml</file>
         <file>qml/ItemsModel.qml</file>
         <file>qml/ItemsDelegate.qml</file>
+        <file>qml/Button.qml</file>
+        <file>images/display.png</file>
+        <file>images/button-red.png</file>
+        <file>images/button-purple.png</file>
+        <file>images/button-green.png</file>
+        <file>images/button-blue.png</file>
+        <file>images/button-.png</file>
     </qresource>
 </RCC>

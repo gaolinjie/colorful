@@ -13,10 +13,21 @@ OTHER_FILES += \
     qml/OrdersModel.qml \
     qml/OrdersDelegate.qml \
     qml/ItemsModel.qml \
-    qml/ItemsDelegate.qml
+    qml/ItemsDelegate.qml \
+    images/button-.png \
+    images/button-blue.png \
+    images/button-green.png \
+    images/button-purple.png \
+    images/button-red.png \
+    images/display.png \
+    qml/Button.qml
 
 RESOURCES += \
     resource.qrc
+
+
+
+
 
 
 
