@@ -52,7 +52,7 @@ Component {
 
             Text {
                 id: subtotalText
-                text: subtotal
+                text: price * number
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: numberText.right; anchors.leftMargin: 52

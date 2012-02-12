@@ -20,10 +20,12 @@ OTHER_FILES += \
     images/button-purple.png \
     images/button-red.png \
     images/display.png \
-    qml/Button.qml
+    qml/Button.qml \
+    js/global.js
 
 RESOURCES += \
     resource.qrc
+
 
 
 

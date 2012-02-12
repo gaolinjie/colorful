@@ -1,4 +1,5 @@
 import QtQuick 1.0
+import "../js/global.js" as Global
 
 Component {
     id: orderDelegate
@@ -11,6 +12,7 @@ Component {
             anchors.fill: parent
             onPressed: {
                 wraper.ListView.view.currentIndex = index
+                Global.orderNO = orderNO
             }
         }
 

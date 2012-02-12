@@ -365,7 +365,7 @@ Rectangle {
         width: 295; height: 40
         anchors.left: analyseButton.right; anchors.leftMargin: 10
         anchors.top: analyseButton.top
-        title: "其他项目"
+        title: "其他功能"
     }
 
 }

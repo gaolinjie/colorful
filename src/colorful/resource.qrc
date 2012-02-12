@@ -16,5 +16,6 @@
         <file>images/button-green.png</file>
         <file>images/button-blue.png</file>
         <file>images/button-.png</file>
+        <file>js/global.js</file>
     </qresource>
 </RCC>
