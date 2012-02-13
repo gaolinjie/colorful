@@ -17,5 +17,6 @@
         <file>images/button-blue.png</file>
         <file>images/button-.png</file>
         <file>js/global.js</file>
+        <file>qml/itemsList.qml</file>
     </qresource>
 </RCC>

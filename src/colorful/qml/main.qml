@@ -1,4 +1,5 @@
 import QtQuick 1.0
+import "../js/global.js" as Global
 
 Rectangle {
     id: background
@@ -148,9 +149,107 @@ Rectangle {
             anchors.top: orderNO.bottom; anchors.topMargin: 20
             width: 600; height:300
             model: OrdersModel{}
-            delegate: OrdersDelegate{}
+            delegate: orderDelegate
             spacing: 5
             smooth: true
+        }
+
+        Component {
+            id: orderDelegate
+
+            Item {
+                id: wraper
+                width: 600; height: 30
+
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        wraper.ListView.view.currentIndex = index
+                        Global.orderNO = orderNO
+                        itemsListLoader.source = ''
+                        itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                    }
+                }
+
+                Rectangle {
+                    id: orderRect
+                    width: 520; height: 30
+                    radius: 8
+                    anchors.left: parent.left; anchors.leftMargin: 40
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: wraper.ListView.isCurrentItem ? "#f4a83d" : "white"
+                    smooth: true
+
+                    Text {
+                        id: orderNOText
+                        text: orderNO
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left; anchors.leftMargin: 10
+                        color: "black"
+                    }
+
+                    Text {
+                        id: seatNOText
+                        text: seatNO
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: orderNOText.right; anchors.leftMargin: 40
+                        color: "black"
+                    }
+
+                    Text {
+                        id: timeText
+                        text: time
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: seatNOText.right; anchors.leftMargin: 80
+                        color: "black"
+                    }
+
+                    Text {
+                        id: discountText
+                        text: discount
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: timeText.right; anchors.leftMargin: 30
+                        color: "black"
+                    }
+
+                    Text {
+                        id: commentText
+                        text: comment
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: discountText.right; anchors.leftMargin: 50
+                        color: "black"
+                    }
+
+                    Text {
+                        id: totalText
+                        text: total
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: commentText.right; anchors.leftMargin: 50
+                        color: "black"
+                    }
+                }
+
+                Image {
+                    source: "qrc:/images/minus.png"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: orderRect.left; anchors.rightMargin: 7
+                    visible: wraper.ListView.isCurrentItem
+                }
+
+                Image {
+                    id: next
+                    source: "qrc:/images/next.png"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: orderRect.right; anchors.leftMargin: -10
+                    visible: wraper.ListView.isCurrentItem
+                }
+            }
         }
     }
 
@@ -214,15 +313,13 @@ Rectangle {
             color: "grey"
         }
 
-        ListView {
-            id: itemsList
+        Item {
+            Loader {
+                id: itemsListLoader
+                source: "qrc:/qml/itemsList.qml"
+            }
             anchors.left: parent.left
-            anchors.top: name.bottom; anchors.topMargin: 20
-            width: 355; height:350
-            model: ItemsModel{}
-            delegate: ItemsDelegate{}
-            spacing: 5
-            smooth: true
+            anchors.top: parent.top; anchors.topMargin: 68
         }
     }
 

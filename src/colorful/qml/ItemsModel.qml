@@ -56,11 +56,11 @@ ListModel {
                                        "name": "朝鲜辣白菜",
                                        "price": 22.0,
                                           "number": 1});
-                    itemsModel.append({"orderNO": "120212001",
+                    itemsModel.append({"orderNO": "120212002",
                                        "name": "陈皮兔肉",
                                        "price": 13.0,
                                           "number": 1});
-                    itemsModel.append({"orderNO": "120212001",
+                    itemsModel.append({"orderNO": "120212002",
                                        "name": "川北凉粉",
                                        "price": 22.5,
                                           "number": 1});

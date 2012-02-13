@@ -11,7 +11,6 @@ OTHER_FILES += \
     images/minus.png \
     images/next.png \
     qml/OrdersModel.qml \
-    qml/OrdersDelegate.qml \
     qml/ItemsModel.qml \
     qml/ItemsDelegate.qml \
     images/button-.png \
@@ -21,10 +20,13 @@ OTHER_FILES += \
     images/button-red.png \
     images/display.png \
     qml/Button.qml \
-    js/global.js
+    js/global.js \
+    qml/itemsList.qml
 
 RESOURCES += \
     resource.qrc
+
+
 
 
 
