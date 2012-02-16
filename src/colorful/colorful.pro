@@ -21,10 +21,28 @@ OTHER_FILES += \
     images/display.png \
     qml/Button.qml \
     js/global.js \
-    qml/itemsList.qml
+    qml/itemsList.qml \
+    images/background.png \
+    qml/Display.qml \
+    js/calculator.js \
+    qml/start.qml
 
 RESOURCES += \
     resource.qrc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

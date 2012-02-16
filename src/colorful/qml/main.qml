@@ -1,10 +1,14 @@
 import QtQuick 1.0
 import "../js/global.js" as Global
+import "../js/calculator.js" as CalcEngine
 
 Rectangle {
     id: background
     width: 1024; height: 768
     color: "#424741"
+
+    signal loadLogin()
+    function doOp(operation) { CalcEngine.doOperation(operation) }
 
     Rectangle {
         id: header
@@ -373,7 +377,8 @@ Rectangle {
         anchors.left: dashbord.left
         anchors.top: dashbord.bottom; anchors.topMargin: 10
         color: 'green'
-        title: "现金收取"
+        operation: "现金收取"
+        textSize: 16
     }
 
     Button {
@@ -382,7 +387,8 @@ Rectangle {
         anchors.left: dashbord.left
         anchors.top: cashButton.bottom; anchors.topMargin: 10
         color: 'purple'
-        title: "刷卡支付"
+        operation: "刷卡支付"
+        textSize: 16
     }
 
     Button {
@@ -390,7 +396,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: ordersRect.left
         anchors.top: ordersRect.bottom; anchors.topMargin: 20
-        title: "打开钱箱"
+        operation: "打开钱箱"
+        textSize: 16
     }
 
     Button {
@@ -398,7 +405,12 @@ Rectangle {
         width: 295; height: 40
         anchors.left: openCashboxButton.right; anchors.leftMargin: 10
         anchors.top: openCashboxButton.top
-        title: "锁定系统"
+        operation: "锁定系统"
+        textSize: 16
+
+        onOperate: {
+            loadLogin()
+        }
     }
 
     Button {
@@ -406,7 +418,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: ordersRect.left
         anchors.top: openCashboxButton.bottom; anchors.topMargin: 10
-        title: "系统设置"
+        operation: "系统设置"
+        textSize: 16
     }
 
     Button {
@@ -414,7 +427,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: settingsButton.right; anchors.leftMargin: 10
         anchors.top: settingsButton.top
-        title: "注销系统"
+        operation: "注销系统"
+        textSize: 16
     }
 
     Button {
@@ -422,7 +436,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: ordersRect.left
         anchors.top: settingsButton.bottom; anchors.topMargin: 10
-        title: "修改折扣"
+        operation: "修改折扣"
+        textSize: 16
     }
 
     Button {
@@ -430,7 +445,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: changeDiscountButton.right; anchors.leftMargin: 10
         anchors.top: changeDiscountButton.top
-        title: "核算收入"
+        operation: "核算收入"
+        textSize: 16
     }
 
     Button {
@@ -438,7 +454,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: ordersRect.left
         anchors.top: changeDiscountButton.bottom; anchors.topMargin: 20
-        title: "设备测试"
+        operation: "设备测试"
+        textSize: 16
     }
 
     Button {
@@ -446,7 +463,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: testButton.right; anchors.leftMargin: 10
         anchors.top: testButton.top
-        title: "打印收据"
+        operation: "打印收据"
+        textSize: 16
     }
 
     Button {
@@ -454,7 +472,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: ordersRect.left
         anchors.top: testButton.bottom; anchors.topMargin: 10
-        title: "销售分析"
+        operation: "销售分析"
+        textSize: 16
     }
 
     Button {
@@ -462,7 +481,8 @@ Rectangle {
         width: 295; height: 40
         anchors.left: analyseButton.right; anchors.leftMargin: 10
         anchors.top: analyseButton.top
-        title: "其他功能"
+        operation: "其他功能"
+        textSize: 16
     }
 
 }

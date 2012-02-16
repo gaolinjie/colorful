@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QDeclarativeView view;
-    view.setSource(QUrl("qrc:/qml/main.qml"));
+    view.setSource(QUrl("qrc:/qml/start.qml"));
 
  //   view.showFullScreen();
     view.show();
