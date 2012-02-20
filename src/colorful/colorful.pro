@@ -25,10 +25,12 @@ OTHER_FILES += \
     images/background.png \
     qml/Display.qml \
     js/calculator.js \
-    qml/start.qml
+    qml/start.qml \
+    qml/ordersList.qml
 
 RESOURCES += \
     resource.qrc
+
 
 
 

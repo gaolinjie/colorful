@@ -6,11 +6,14 @@ ListModel {
     Component.onCompleted: loadItemsData()
   //Component.onDestruction: saveItemsData()
     function loadItemsData() {
+        if (Global.orderNO == "") {
+           // return
+        }
         var db = openDatabaseSync("DemoDB", "1.0", "Demo Model SQL", 50000);
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE orderItemsData');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItemsData(orderNO TEXT key, name TEXT, price MONEY, number INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItemsData(orderNO TEXT key, name TEXT, price MONEY, number INTEGER)');                        
                 var rs = tx.executeSql('SELECT * FROM orderItemsData WHERE orderNO = ?', [Global.orderNO]);
                 var index = 0;
                 if (rs.rows.length > 0) {
@@ -221,11 +224,11 @@ ListModel {
                                        "name": "豉油乳鸽皇",
                                        "price": 17.5,
                                           "number": 1});
-                    itemsModel.append({"orderNO": "120212007",
+                    itemsModel.append({"orderNO": "120212008",
                                        "name": "卤水鸭舌",
                                        "price": 17.5,
                                           "number": 1});
-                    itemsModel.append({"orderNO": "120212007",
+                    itemsModel.append({"orderNO": "120212009",
                                        "name": "香吃茶树菇",
                                        "price": 17.5,
                                           "number": 1});

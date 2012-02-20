@@ -22,13 +22,15 @@ Component {
             anchors.verticalCenter: parent.verticalCenter
             color: wraper.ListView.isCurrentItem ? "#f4a83d" : "white"
             smooth: true
+            border.color: "grey"
+            border.width: 1
 
             Text {
                 id: nameText
                 text: name
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left; anchors.leftMargin: 20
+                anchors.left: parent.left; anchors.leftMargin: 10
                 color: "black"
             }
 
@@ -37,7 +39,7 @@ Component {
                 text: price
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: nameText.right; anchors.leftMargin: 10
+                anchors.left: parent.left; anchors.leftMargin: 120
                 color: "black"
             }
 
@@ -46,7 +48,7 @@ Component {
                 text: number
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: priceText.right; anchors.leftMargin: 55
+                anchors.left: parent.left; anchors.leftMargin: 200
                 color: "black"
             }
 
@@ -55,7 +57,7 @@ Component {
                 text: price * number
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: numberText.right; anchors.leftMargin: 52
+                anchors.left: parent.left; anchors.leftMargin: 255
                 color: "black"
             }
         }

@@ -6,7 +6,7 @@ Item {
 
     Loader {
         id: mainLoader
-        source: "qrc:/qml/login.qml"
+        source: "qrc:/qml/main.qml"
     }
 
     Connections{

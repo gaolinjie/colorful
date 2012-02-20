@@ -2,4 +2,5 @@
 
 var orderNO = ""
 var displayText = ""
+var pay = "0"
 

@@ -14,8 +14,8 @@ BorderImage {
             right: parent.right; verticalCenter: parent.verticalCenter; verticalCenterOffset: 5
             rightMargin: 6
         }
-        font.pixelSize: parent.height * .8; horizontalAlignment: Text.AlignRight; elide: Text.ElideRight
+        font.pixelSize: 16; horizontalAlignment: Text.AlignRight; elide: Text.ElideRight
         color: "#343434"; smooth: true; font.bold: true
-        text: ""
+        text: "请输入密码："
     }
 }

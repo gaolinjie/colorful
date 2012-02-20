@@ -21,5 +21,6 @@
         <file>qml/Display.qml</file>
         <file>js/calculator.js</file>
         <file>qml/start.qml</file>
+        <file>qml/ordersList.qml</file>
     </qresource>
 </RCC>

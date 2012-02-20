@@ -2,10 +2,16 @@ import QtQuick 1.0
 import "../js/global.js" as Global
 import "../js/calculator.js" as CalcEngine
 
-Rectangle {
-    id: background
-    width: 1024; height: 768
-    color: "#424741"
+Image {
+    sourceSize.width: 1024
+    sourceSize.height: 768
+    source: "qrc:/images/background.png"
+
+    Component.onCompleted: {
+
+        itemsListLoader.source = ''
+        itemsListLoader.source = "qrc:/qml/itemsList.qml"
+    }
 
     signal loadLogin()
     function doOp(operation) { CalcEngine.doOperation(operation) }
@@ -16,6 +22,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.top: parent.top
         color: "black"
+        opacity: 0.8
 
         Image {
             id: logo
@@ -40,12 +47,12 @@ Rectangle {
             text: "12:30"
             font.pixelSize: 30
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: date.left; anchors.rightMargin: 15
+            anchors.right: datea.left; anchors.rightMargin: 15
             color: "white"
         }
 
         Text {
-            id: date
+            id: datea
             text: "2012年2月11日\n星期六"
             font.pixelSize: 12
             anchors.verticalCenter: parent.verticalCenter
@@ -62,6 +69,7 @@ Rectangle {
         color: "#e3e3e3"
         radius: 10
         smooth: true
+        opacity: 0.8
 
         Rectangle {
             id: ordersRectLabel
@@ -76,20 +84,47 @@ Rectangle {
                 anchors.centerIn: parent
                 color: "white"
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    ordersRectLabel.color = "#78b117"
+                    finishRectLabel.color = "grey"
+                    Global.pay = "0"
+                    ordersListLoader.source = ""
+                    ordersListLoader.source = "qrc:/qml/ordersList.qml"
+                    itemsListLoader.source = ''
+                    itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                }
+            }
         }
 
         Rectangle {
             id: finishRectLabel
             width: 100; height: 30
-            anchors.left: ordersRectLabel.right; anchors.leftMargin: -10
+            anchors.left: ordersRectLabel.right
             anchors.top: parent.top; anchors.topMargin: -10
             color: "grey"
 
             Text {
+                id: finishRectLabelText
                 text: "已结订单"
                 font.pixelSize: 18
                 anchors.centerIn: parent
                 color: "white"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    finishRectLabel.color = "#78b117"
+                    ordersRectLabel.color = "grey"
+                    Global.pay = "1"
+                    ordersListLoader.source = ""
+                    ordersListLoader.source = "qrc:/qml/ordersList.qml"
+                    itemsListLoader.source = ''
+                    itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                }
             }
         }
 
@@ -112,11 +147,20 @@ Rectangle {
         }
 
         Text {
+            id: date
+            text: "日期"
+            font.pixelSize: 15
+            anchors.top: seatNO.top
+            anchors.left: seatNO.right; anchors.leftMargin: 50
+            color: "grey"
+        }
+
+        Text {
             id: time
             text: "时间"
             font.pixelSize: 15
-            anchors.top: seatNO.top
-            anchors.left: seatNO.right; anchors.leftMargin: 65
+            anchors.top: date.top
+            anchors.left: date.right; anchors.leftMargin: 65
             color: "grey"
         }
 
@@ -130,32 +174,21 @@ Rectangle {
         }
 
         Text {
-            id: comment
-            text: "备注"
-            font.pixelSize: 15
-            anchors.top: discount.top
-            anchors.left: discount.right; anchors.leftMargin: 50
-            color: "grey"
-        }
-
-        Text {
             id: total
             text: "总计"
             font.pixelSize: 15
-            anchors.top: comment.top
-            anchors.left: comment.right; anchors.leftMargin: 50
+            anchors.top: discount.top
+            anchors.left: discount.right; anchors.leftMargin: 55
             color: "grey"
         }
 
-        ListView {
-            id: ordersList
+        Item {
+            Loader {
+                id: ordersListLoader
+                source: "qrc:/qml/ordersList.qml"
+            }
             anchors.left: parent.left
-            anchors.top: orderNO.bottom; anchors.topMargin: 20
-            width: 600; height:300
-            model: OrdersModel{}
-            delegate: orderDelegate
-            spacing: 5
-            smooth: true
+            anchors.top: parent.top; anchors.topMargin: 68
         }
 
         Component {
@@ -183,6 +216,8 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     color: wraper.ListView.isCurrentItem ? "#f4a83d" : "white"
                     smooth: true
+                    border.color: "grey"
+                    border.width: 1
 
                     Text {
                         id: orderNOText
@@ -198,7 +233,16 @@ Rectangle {
                         text: seatNO
                         font.pixelSize: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: orderNOText.right; anchors.leftMargin: 40
+                        anchors.left: parent.left; anchors.leftMargin: 120
+                        color: "black"
+                    }
+
+                    Text {
+                        id: dateText
+                        text: date
+                        font.pixelSize: 15
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left; anchors.leftMargin: 180
                         color: "black"
                     }
 
@@ -207,7 +251,7 @@ Rectangle {
                         text: time
                         font.pixelSize: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: seatNOText.right; anchors.leftMargin: 80
+                        anchors.left: parent.left; anchors.leftMargin: 290
                         color: "black"
                     }
 
@@ -216,25 +260,17 @@ Rectangle {
                         text: discount
                         font.pixelSize: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: timeText.right; anchors.leftMargin: 30
+                        anchors.left: parent.left; anchors.leftMargin: 393
                         color: "black"
                     }
 
-                    Text {
-                        id: commentText
-                        text: comment
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: discountText.right; anchors.leftMargin: 50
-                        color: "black"
-                    }
 
                     Text {
                         id: totalText
                         text: total
                         font.pixelSize: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: commentText.right; anchors.leftMargin: 50
+                        anchors.left: parent.left; anchors.leftMargin: 470
                         color: "black"
                     }
                 }
@@ -265,6 +301,7 @@ Rectangle {
         color: "#e3e3e3"
         radius: 10
         smooth: true
+        opacity: 0.8
 
         Rectangle {
             id: detailRectLabel

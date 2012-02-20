@@ -6,7 +6,7 @@ Item {
         width: 355; height:350
         model: ItemsModel{}
         delegate: ItemsDelegate{}
-        spacing: 5
+        //spacing: 5
         smooth: true
     }
 }

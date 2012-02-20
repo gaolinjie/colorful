@@ -12,26 +12,27 @@ Image {
     Rectangle {
         id: window
         anchors.centerIn: parent
-        width: 250; height: 400
+        width: 260; height: 365
         color: "#282828"
         radius: 5
-
+        opacity: 0.8
+/*
         Text {
             id: promopt
             text: "请输入密码"
             font.pixelSize: 20
-            font.bold: true
+            //font.bold: true
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top; anchors.topMargin: 15
-        }
+        }*/
 
         Display {
             id: display
-            width: box.width-10
+            width: box.width
             height: 50
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: promopt.bottom; anchors.topMargin: 15
+            anchors.top: parent.top; anchors.topMargin: 20
         }
 
         Column {
