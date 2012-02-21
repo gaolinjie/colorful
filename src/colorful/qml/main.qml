@@ -8,7 +8,6 @@ Image {
     source: "qrc:/images/background.png"
 
     Component.onCompleted: {
-
         itemsListLoader.source = ''
         itemsListLoader.source = "qrc:/qml/itemsList.qml"
     }
@@ -22,7 +21,7 @@ Image {
         anchors.left: parent.left
         anchors.top: parent.top
         color: "black"
-        opacity: 0.8
+        //opacity: 0.8
 
         Image {
             id: logo
@@ -69,7 +68,7 @@ Image {
         color: "#e3e3e3"
         radius: 10
         smooth: true
-        opacity: 0.8
+        //opacity: 0.8
 
         Rectangle {
             id: ordersRectLabel
@@ -194,9 +193,14 @@ Image {
         Component {
             id: orderDelegate
 
+
             Item {
                 id: wraper
                 width: 600; height: 30
+                Component.onCompleted: {
+                    sumText.text = wraper.ListView.view.model.get(0).total
+                    discText.text = wraper.ListView.view.model.get(0).discount
+                }
 
                 MouseArea {
                     anchors.fill: parent
@@ -205,6 +209,8 @@ Image {
                         Global.orderNO = orderNO
                         itemsListLoader.source = ''
                         itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                        sumText.text = total
+                        discText.text = discount
                     }
                 }
 
@@ -270,7 +276,7 @@ Image {
                         text: total
                         font.pixelSize: 15
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 470
+                        anchors.left: parent.left; anchors.leftMargin: 480
                         color: "black"
                     }
                 }
@@ -301,7 +307,7 @@ Image {
         color: "#e3e3e3"
         radius: 10
         smooth: true
-        opacity: 0.8
+        //opacity: 0.8
 
         Rectangle {
             id: detailRectLabel
@@ -381,8 +387,8 @@ Image {
         }
 
         Text {
-            id: sumText
-            text: "合 计:           120.00"
+            id: sumTitle
+            text: "合 计:"
             anchors.top: parent.top; anchors.topMargin: 15
             anchors.left: parent.left; anchors.leftMargin: 110
             font.pixelSize: 16
@@ -390,17 +396,35 @@ Image {
         }
 
         Text {
+            id: sumText
+            text: Global.orderNO
+            anchors.top: sumTitle.top
+            anchors.right: parent.right; anchors.rightMargin: 110
+            font.pixelSize: 16
+            color: "white"
+        }
+
+        Text {
+            id: discTitle
+            text: "折 扣:"
+            anchors.top: sumTitle.bottom; anchors.topMargin: 5
+            anchors.left: sumTitle.left
+            font.pixelSize: 16
+            color: "white"
+        }
+
+        Text {
             id: discText
-            text: "折 扣:             38.00"
+            text: ""
             anchors.top: sumText.bottom; anchors.topMargin: 5
-            anchors.left: sumText.left
+            anchors.right: sumText.right
             font.pixelSize: 16
             color: "white"
         }
 
         Text {
             id: totalText
-            text: "82.00"
+            text: sumText.text - discText.text
             anchors.bottom: parent.bottom; anchors.bottomMargin: 15
             anchors.horizontalCenter: parent.horizontalCenter
             font.pixelSize: 55
@@ -416,6 +440,11 @@ Image {
         color: 'green'
         operation: "现金收取"
         textSize: 16
+
+        onOperate: {
+            foreground.visible = true
+            cashDialog.y = 0
+        }
     }
 
     Button {
@@ -426,6 +455,11 @@ Image {
         color: 'purple'
         operation: "刷卡支付"
         textSize: 16
+
+        onOperate: {
+            foreground.visible = true
+            cardDialog.y = 0
+        }
     }
 
     Button {
@@ -522,4 +556,181 @@ Image {
         textSize: 16
     }
 
+    Rectangle {
+        id: foreground
+        width: parent.width; height: parent.height
+        color: "black"
+        opacity: 0.6
+        visible: false
+    }
+
+    Item {
+        id: cashDialog
+        width: 600; height: 400
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 768
+
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+
+        Rectangle {
+            id: cashDialogRect
+            width: 600; height: 400
+            color: "black"
+            smooth: true
+            opacity: 0.8
+            radius: 10
+        }
+
+        Rectangle {
+            id: cashDialogHeader
+            width: parent.width; height: 60
+            color: "black"
+
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: Qt.rgba(0.5,0.5,0.5,0.5) }
+                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 1.0; color: "black" }
+            }
+
+            Text {
+                id: cashDialogTitle
+                text: "现金收取"
+                font.pixelSize: 20
+                font.bold: true
+                anchors.centerIn: parent
+                color: "white"
+            }
+        }
+
+        Text {
+            id: totalDueTitle
+            text: "应收金额"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 20
+        }
+
+        Text {
+            id: totalDue
+            text: "6.44"
+            font.pixelSize: 56
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 40
+        }
+
+        Text {
+            id: tenderedTitle
+            text: "实收金额"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 130
+        }
+
+        Text {
+            id: tendered
+            text: "10.01"
+            font.pixelSize: 66
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
+        }
+
+        Button {
+            id: cancelButton
+            width: 260; height: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 250
+            operation: "取 消"
+            textSize: 18
+
+            onOperate: {
+                cashDialog.y = 768
+                foreground.visible = false
+            }
+        }
+    }
+
+    Item {
+        id: cardDialog
+        width: 600; height: 400
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 768
+
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+
+        Rectangle {
+            id: cardDialogRect
+            width: 600; height: 400
+            color: "black"
+            smooth: true
+            opacity: 0.8
+            radius: 10
+        }
+
+        Rectangle {
+            id: cardDialogHeader
+            width: parent.width; height: 60
+            color: "black"
+
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: Qt.rgba(0.5,0.5,0.5,0.5) }
+                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 1.0; color: "black" }
+            }
+
+            Text {
+                id: cardDialogTitle
+                text: "刷卡支付"
+                font.pixelSize: 20
+                font.bold: true
+                anchors.centerIn: parent
+                color: "white"
+            }
+        }
+
+        Text {
+            id: totalDue2Title
+            text: "应收金额"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cardDialogHeader.bottom; anchors.topMargin: 20
+        }
+
+        Text {
+            id: total2Due
+            text: "6.44"
+            font.pixelSize: 56
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cardDialogHeader.bottom; anchors.topMargin: 40
+        }
+
+        Button {
+            id: printReceiptButton
+            width: 260; height: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: cardDialogHeader.bottom; anchors.topMargin: 250
+            operation: "打印收据"
+            textSize: 18
+            color: "green"
+
+            onOperate: {
+                cardDialog.y = 768
+                foreground.visible = false
+            }
+        }
+    }
 }
