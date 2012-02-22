@@ -20,3 +20,19 @@ function doOperation(op) {
         trueText = trueText.toString().slice(0, -1)
     }
 }
+
+function doOperation2(op) {
+    if (op.toString().length==1 && ((op >= "0" && op <= "9"))) {
+        if (display.text.toString().length >= 5)
+            return; // No arbitrary length numbers
+        if (lastOp.toString().length == 1 && (lastOp >= "0" && lastOp <= "9")) {
+            display.text = display.text + op.toString()
+        } else {
+            display.text = op.toString()
+        }
+        lastOp = op.toString()
+        return
+    } else if (op == "\u2190") {
+        display.text = display.text.toString().slice(0, -1)
+    }
+}

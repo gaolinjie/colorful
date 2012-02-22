@@ -13,7 +13,7 @@ Image {
     }
 
     signal loadLogin()
-    function doOp(operation) { CalcEngine.doOperation(operation) }
+    function doOp(operation) { CalcEngine.doOperation2(operation) }
 
     Rectangle {
         id: header
@@ -444,6 +444,7 @@ Image {
         onOperate: {
             foreground.visible = true
             cashDialog.y = 0
+            keyboard.y = 400
         }
     }
 
@@ -631,28 +632,162 @@ Image {
             font.bold: true
             color: "grey"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 130
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 120
         }
 
-        Text {
-            id: tendered
-            text: "10.01"
-            font.pixelSize: 66
-            color: "white"
+        Display2 {
+            id: display
+            width: box.width
+            height: 80
+            color: "black"
+            radius: 10
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
+            text: "0.0"
+
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: Qt.rgba(0.5,0.5,0.5,0.5) }
+                GradientStop { position: 0.7; color: "black" }
+                GradientStop { position: 1.0; color: "black" }
+            }
         }
 
         Button {
             id: cancelButton
             width: 260; height: 50
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 250
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 260
             operation: "取 消"
             textSize: 18
 
             onOperate: {
                 cashDialog.y = 768
+                keyboard.y = 768
+                //foreground.visible = false
+                dealyTimer.running = true
+
+            }
+        }
+
+        Timer {
+            id: dealyTimer
+            interval: 500; running: false; //repeat: true
+            onTriggered: {
+                changeDialog.y = 0
+            }
+        }
+    }
+
+    Item {
+        id: changeDialog
+        width: 600; height: 400
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 768
+
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+
+        Rectangle {
+            id: changeDialogRect
+            width: 600; height: 400
+            color: "black"
+            smooth: true
+            opacity: 0.8
+            radius: 10
+        }
+
+        Rectangle {
+            id: changeDialogHeader
+            width: parent.width; height: 60
+            color: "black"
+
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: Qt.rgba(0.5,0.5,0.5,0.5) }
+                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 1.0; color: "black" }
+            }
+
+            Text {
+                id: changeDialogTitle
+                text: "现金找零"
+                font.pixelSize: 20
+                font.bold: true
+                anchors.centerIn: parent
+                color: "white"
+            }
+        }
+
+        Text {
+            id: totalDue2Title
+            text: "应收金额:"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.left: parent.left; anchors.leftMargin: 220
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 20
+        }
+
+        Text {
+            id: totalDue2
+            text: "6.44"
+            font.pixelSize: 16
+            color: "white"
+            anchors.right: parent.right; anchors.rightMargin: 220
+            anchors.bottom: totalDue2Title.bottom
+        }
+
+        Text {
+            id: tendered2Title
+            text: "实收金额:"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.left: totalDue2Title.left
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 60
+        }
+
+        Text {
+            id: tendered2
+            text: "10.01"
+            font.pixelSize: 16
+            color: "white"
+            anchors.right: totalDue2.right
+            anchors.bottom: tendered2Title.bottom
+        }
+
+        Text {
+            id: changeTitle
+            text: "找 零"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 120
+        }
+
+        Text {
+            id: change
+            text: "10.01"
+            font.pixelSize: 66
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 140
+        }
+
+        Button {
+            id: printReceiptButton
+            width: 260; height: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 260
+            operation: "打印收据"
+            textSize: 18
+            color: "green"
+
+            onOperate: {
+                changeDialog.y = 768
                 foreground.visible = false
             }
         }
@@ -700,7 +835,7 @@ Image {
         }
 
         Text {
-            id: totalDue2Title
+            id: totalDue3Title
             text: "应收金额"
             font.pixelSize: 16
             font.bold: true
@@ -710,7 +845,7 @@ Image {
         }
 
         Text {
-            id: total2Due
+            id: total3Due
             text: "6.44"
             font.pixelSize: 56
             color: "white"
@@ -719,10 +854,10 @@ Image {
         }
 
         Button {
-            id: printReceiptButton
+            id: printReceipt2Button
             width: 260; height: 50
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cardDialogHeader.bottom; anchors.topMargin: 250
+            anchors.top: cardDialogHeader.bottom; anchors.topMargin: 260
             operation: "打印收据"
             textSize: 18
             color: "green"
@@ -730,6 +865,52 @@ Image {
             onOperate: {
                 cardDialog.y = 768
                 foreground.visible = false
+            }
+        }
+    }
+
+    Rectangle {
+        id: keyboard
+        width: parent.width; height: 368
+        color: "#343434";
+        y: 768
+
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+
+        Image { source: "qrc:/images/stripes.png"; fillMode: Image.Tile; anchors.fill: parent; opacity: 0.3 }
+
+        Column {
+            id: box; spacing: 10
+            anchors.centerIn: parent
+
+            Column {
+                id: column; spacing: 10
+
+                Grid {
+                    id: grid; rows: 4; columns: 3; spacing: 8
+
+                    Button { width: 70; height: 60; operation: "7"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "8"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "9"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "4"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "5"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "6"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "1"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "2"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "3"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "\u2190"; color: "red"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "0"; textSize: 20}
+                    Button { width: 70; height: 60; operation: "OK"; color: "green"; textSize: 20
+                        onOperate: {
+                            cashDialog.y = 768
+                            keyboard.y = 768
+                            //foreground.visible = false
+                            dealyTimer.running = true
+                        }
+                    }
+                }
             }
         }
     }

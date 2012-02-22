@@ -26,10 +26,14 @@ OTHER_FILES += \
     qml/Display.qml \
     js/calculator.js \
     qml/start.qml \
-    qml/ordersList.qml
+    qml/ordersList.qml \
+    images/stripes.png \
+    qml/Display2.qml
 
 RESOURCES += \
     resource.qrc
+
+
 
 
 
