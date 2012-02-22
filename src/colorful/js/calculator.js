@@ -1,5 +1,6 @@
 
 var lastOp = ""
+var realText = ""
 var trueText = ""
 
 function doOperation(op) {
@@ -23,16 +24,19 @@ function doOperation(op) {
 
 function doOperation2(op) {
     if (op.toString().length==1 && ((op >= "0" && op <= "9"))) {
-        if (display.text.toString().length >= 5)
+        if (display.text.toString().length >= 6)
             return; // No arbitrary length numbers
         if (lastOp.toString().length == 1 && (lastOp >= "0" && lastOp <= "9")) {
-            display.text = display.text + op.toString()
+            realText = realText + lastOp;
+            display.text = realText + "." + op.toString()
         } else {
-            display.text = op.toString()
+            display.text = "0." + op.toString()
         }
         lastOp = op.toString()
         return
     } else if (op == "\u2190") {
-        display.text = display.text.toString().slice(0, -1)
+        display.text = "0"
+        realText = ""
+        lastOp = ""
     }
 }

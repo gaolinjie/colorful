@@ -10,7 +10,7 @@ ListModel {
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE ordersData');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount TEXT, total TEXT, pay TEXT)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount MONEY, total MONEY, pay TEXT)');
                 var rs = tx.executeSql('SELECT * FROM ordersData WHERE pay = ?', [Global.pay]);
                 var index = 0;
                 if (rs.rows.length > 0) {
@@ -105,7 +105,7 @@ ListModel {
         db.transaction(
             function(tx) {
                 tx.executeSql('DROP TABLE ordersData');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount TEXT, total TEXT, pay TEXT)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount MONEY, total MONEY, pay TEXT)');
                 var index = 0;
                 while (index < ordersModel.count) {
                     var item = ordersModel.get(index);

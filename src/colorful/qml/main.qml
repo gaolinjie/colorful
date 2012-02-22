@@ -193,7 +193,6 @@ Image {
         Component {
             id: orderDelegate
 
-
             Item {
                 id: wraper
                 width: 600; height: 30
@@ -592,7 +591,7 @@ Image {
             gradient: Gradient {
                 GradientStop { position: 0.0;
                                color: Qt.rgba(0.5,0.5,0.5,0.5) }
-                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 0.7; color: "black" }
                 GradientStop { position: 1.0; color: "black" }
             }
 
@@ -618,7 +617,7 @@ Image {
 
         Text {
             id: totalDue
-            text: "6.44"
+            text: totalText.text
             font.pixelSize: 56
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
@@ -643,7 +642,7 @@ Image {
             radius: 10
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
-            text: "0.0"
+            text: "0"
 
             gradient: Gradient {
                 GradientStop { position: 0.0;
@@ -706,7 +705,7 @@ Image {
             gradient: Gradient {
                 GradientStop { position: 0.0;
                                color: Qt.rgba(0.5,0.5,0.5,0.5) }
-                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 0.7; color: "black" }
                 GradientStop { position: 1.0; color: "black" }
             }
 
@@ -721,41 +720,41 @@ Image {
         }
 
         Text {
-            id: totalDue2Title
-            text: "应收金额:"
-            font.pixelSize: 16
-            font.bold: true
-            color: "grey"
-            anchors.left: parent.left; anchors.leftMargin: 220
-            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 20
-        }
-
-        Text {
-            id: totalDue2
-            text: "6.44"
-            font.pixelSize: 16
-            color: "white"
-            anchors.right: parent.right; anchors.rightMargin: 220
-            anchors.bottom: totalDue2Title.bottom
-        }
-
-        Text {
             id: tendered2Title
             text: "实收金额:"
             font.pixelSize: 16
             font.bold: true
             color: "grey"
             anchors.left: totalDue2Title.left
-            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 60
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 20
         }
 
         Text {
             id: tendered2
-            text: "10.01"
+            text: display.text
             font.pixelSize: 16
             color: "white"
             anchors.right: totalDue2.right
             anchors.bottom: tendered2Title.bottom
+        }
+
+        Text {
+            id: totalDue2Title
+            text: "应收金额:"
+            font.pixelSize: 16
+            font.bold: true
+            color: "grey"
+            anchors.left: parent.left; anchors.leftMargin: 220
+            anchors.top: changeDialogHeader.bottom; anchors.topMargin: 60
+        }
+
+        Text {
+            id: totalDue2
+            text: totalDue.text
+            font.pixelSize: 16
+            color: "white"
+            anchors.right: parent.right; anchors.rightMargin: 220
+            anchors.bottom: totalDue2Title.bottom
         }
 
         Text {
@@ -770,7 +769,7 @@ Image {
 
         Text {
             id: change
-            text: "10.01"
+            text: tendered2.text - totalDue2.text
             font.pixelSize: 66
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
@@ -789,6 +788,9 @@ Image {
             onOperate: {
                 changeDialog.y = 768
                 foreground.visible = false
+                display.text = "0"
+                CalcEngine.lastOp = ""
+                CalcEngine.realText = ""
             }
         }
     }
@@ -820,7 +822,7 @@ Image {
             gradient: Gradient {
                 GradientStop { position: 0.0;
                                color: Qt.rgba(0.5,0.5,0.5,0.5) }
-                GradientStop { position: 0.5; color: "black" }
+                GradientStop { position: 0.7; color: "black" }
                 GradientStop { position: 1.0; color: "black" }
             }
 
@@ -846,7 +848,7 @@ Image {
 
         Text {
             id: total3Due
-            text: "6.44"
+            text: totalDue.text
             font.pixelSize: 56
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
