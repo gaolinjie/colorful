@@ -15,6 +15,17 @@ Image {
     signal loadLogin()
     function doOp(operation) { CalcEngine.doOperation2(operation) }
 
+    Connections {
+        id: serverConnection
+        target: server;
+        onRefreshUi: {
+            ordersListLoader.source = ""
+            ordersListLoader.source = "qrc:/qml/ordersList.qml"
+            itemsListLoader.source = ''
+            itemsListLoader.source = "qrc:/qml/itemsList.qml"
+        }
+    }
+
     Rectangle {
         id: header
         width: 1024; height: 60
@@ -642,7 +653,7 @@ Image {
             radius: 10
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
-            text: "0"
+            text: "0.0"
 
             gradient: Gradient {
                 GradientStop { position: 0.0;
@@ -788,9 +799,12 @@ Image {
             onOperate: {
                 changeDialog.y = 768
                 foreground.visible = false
-                display.text = "0"
+                display.text = "0.0"
                 CalcEngine.lastOp = ""
                 CalcEngine.realText = ""
+                orderManager.payOrder(Global.orderNO)
+                Global.orderNO = -1
+                server.sendRefreshUiSignal()
             }
         }
     }

@@ -35,7 +35,7 @@ function doOperation2(op) {
         lastOp = op.toString()
         return
     } else if (op == "\u2190") {
-        display.text = "0"
+        display.text = "0.0"
         realText = ""
         lastOp = ""
     }

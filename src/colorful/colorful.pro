@@ -1,8 +1,14 @@
 QT += core gui
 QT += core gui declarative
+QT += network
+QT += sql
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    server.cpp \
+    clientsocket.cpp \
+    ordermanager.cpp \
+    client.cpp
 
 OTHER_FILES += \
     qml/login.qml \
@@ -32,6 +38,16 @@ OTHER_FILES += \
 
 RESOURCES += \
     resource.qrc
+
+HEADERS += \
+    server.h \
+    clientsocket.h \
+    ordermanager.h \
+    client.h
+
+
+
+
 
 
 

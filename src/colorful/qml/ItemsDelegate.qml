@@ -45,7 +45,7 @@ Component {
 
             Text {
                 id: numberText
-                text: number
+                text: num
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left; anchors.leftMargin: 200
@@ -54,7 +54,7 @@ Component {
 
             Text {
                 id: subtotalText
-                text: price * number
+                text: price * num
                 font.pixelSize: 15
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left; anchors.leftMargin: 255

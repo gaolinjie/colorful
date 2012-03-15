@@ -3,15 +3,15 @@ import "../js/global.js" as Global
 
 ListModel {
     id: ordersModel
-    Component.onCompleted: loadOrdersData()
-  //Component.onDestruction: saveOrdersData()
-    function loadOrdersData() {
+    Component.onCompleted: loadOrderList()
+  //Component.onDestruction: saveOrderList()
+    function loadOrderList() {
         var db = openDatabaseSync("DemoDB", "1.0", "Demo Model SQL", 50000);
         db.transaction(
             function(tx) {
-                //tx.executeSql('DROP TABLE ordersData');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount MONEY, total MONEY, pay TEXT)');
-                var rs = tx.executeSql('SELECT * FROM ordersData WHERE pay = ?', [Global.pay]);
+                //tx.executeSql('DROP TABLE orderList');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
+                var rs = tx.executeSql('SELECT * FROM orderList WHERE pay = ?', [Global.pay]);
                 var index = 0;
                 if (rs.rows.length > 0) {
                     while (index < rs.rows.length) {
@@ -31,6 +31,8 @@ ListModel {
                         index++;
                     }
                 } else {
+                    Global.orderNO = -1 // 该类别的orderlist无数据，置当前orderNO为无效数据
+                    /*
                     ordersModel.append({"orderNO": "120212001",
                                         "seatNO": "18",
                                         "date": "2012-02-12",
@@ -93,23 +95,23 @@ ListModel {
                                         "time": "12:45",
                                         "discount": "10",
                                         "total": "110",
-                                        "pay": "1"});
+                                        "pay": "1"});*/
 
                 }
             }
         )
     }
 
-    function saveOrdersData() {
+    function saveOrderList() {
         var db = openDatabaseSync("DemoDB", "1.0", "Demo Model SQL", 50000);
         db.transaction(
             function(tx) {
-                tx.executeSql('DROP TABLE ordersData');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS ordersData(orderNO TEXT key, seatNO TEXT, date TEXT, time TEXT, discount MONEY, total MONEY, pay TEXT)');
+                tx.executeSql('DROP TABLE orderList');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
                 var index = 0;
                 while (index < ordersModel.count) {
                     var item = ordersModel.get(index);
-                    tx.executeSql('INSERT INTO ordersData VALUES(?,?,?,?,?,?,?)', [item.orderNO, item.seatNO, item.date, item.time, item.discount, item.total, item.pay]);
+                    tx.executeSql('INSERT INTO orderList VALUES(?,?,?,?,?,?,?)', [item.orderNO, item.seatNO, item.date, item.time, item.discount, item.total, item.pay]);
                     index++;
                 }
             }
