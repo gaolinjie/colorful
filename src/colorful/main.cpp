@@ -54,5 +54,6 @@ int main(int argc, char *argv[])
     Client client;
     QObject::connect(&orderManager, SIGNAL(pay(quint32)), &client, SLOT(sendPaiedOrder(quint32)));
 
+
     return a.exec();
 }

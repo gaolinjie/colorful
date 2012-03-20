@@ -13,13 +13,14 @@ ListModel {
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE orderItems');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, name TEXT, price REAL, num INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, suborderNO INTEGER, name TEXT, price REAL, num INTEGER)');
                 var rs = tx.executeSql('SELECT * FROM orderItems WHERE orderNO = ?', [Global.orderNO]);
                 var index = 0;
                 if (rs.rows.length > 0) {
                     while (index < rs.rows.length) {
                         var item = rs.rows.item(index);
                         itemsModel.append({"orderNO": item.orderNO,
+                                           "suborderNO": item.suborderNO,
                                            "name": item.name,
                                            "price": item.price,
                                            "num": item.num});
@@ -242,11 +243,11 @@ ListModel {
         db.transaction(
             function(tx) {
                 tx.executeSql('DROP TABLE orderItems');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, name TEXT, price REAL, num INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, suborderNO INTEGER, name TEXT, price REAL, num INTEGER)');
                 var index = 0;
                 while (index < itemsModel.count) {
                     var item = itemsModel.get(index);
-                    tx.executeSql('INSERT INTO orderItems VALUES(?,?,?,?)', [item.orderNO, item.name, item.price, item.num]);
+                    tx.executeSql('INSERT INTO orderItems VALUES(?,?,?,?,?)', [item.orderNO, item.suborderNO, item.name, item.price, item.num]);
                     index++;
                 }
             }

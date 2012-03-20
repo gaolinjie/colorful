@@ -17,6 +17,10 @@ private slots:
     void readClient();
 
 private:
+    void readOrder(QDataStream &in);
+    void registerDevice(QDataStream &in);
+
+private:
     quint16 nextBlockSize;
 };
 
