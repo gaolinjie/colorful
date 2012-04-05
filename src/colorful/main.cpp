@@ -11,6 +11,8 @@
 #include "server.h"
 #include "client.h"
 #include "ordermanager.h"
+#include "digitalclock.h"          //--时间源文件  ljl  2012-04-05 --//
+
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +36,7 @@ int main(int argc, char *argv[])
     view.engine()->setOfflineStoragePath(path);
     view.rootContext()->setContextProperty("server", &server);
     view.rootContext()->setContextProperty("orderManager", &orderManager);
+    view.rootContext()->setContextProperty("systemClock",new DigitalClock);  //--QML可用的时钟对象  ljl  2012-04-05 --//
     view.setSource(QUrl("qrc:/qml/start.qml"));
     view.show();
 

@@ -52,23 +52,13 @@ Image {
             color: "white"
         }
 
-        Text {
-            id: timer
-            text: "12:30"
-            font.pixelSize: 30
+        // Begin Issue #5, lijunliang, 2012-04-05 //
+        Digitalclk {
+            width: 230; height: 30
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: datea.left; anchors.rightMargin: 15
-            color: "white"
+            anchors.right: parent.right; anchors.leftMargin: 15
         }
-
-        Text {
-            id: datea
-            text: "2012年2月11日\n星期六"
-            font.pixelSize: 12
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right; anchors.rightMargin: 15
-            color: "white"
-        }
+        // End Issue #5 //
     }
 
     Rectangle {

@@ -24,5 +24,6 @@
         <file>qml/ordersList.qml</file>
         <file>images/stripes.png</file>
         <file>qml/Display2.qml</file>
+        <file>qml/Digitalclk.qml</file>
     </qresource>
 </RCC>

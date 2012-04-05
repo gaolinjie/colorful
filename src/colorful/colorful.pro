@@ -9,7 +9,8 @@ SOURCES += \
     clientsocket.cpp \
     ordermanager.cpp \
     client.cpp \
-    devicemanager.cpp
+    devicemanager.cpp \
+    digitalclock.cpp
 
 OTHER_FILES += \
     qml/login.qml \
@@ -35,7 +36,8 @@ OTHER_FILES += \
     qml/start.qml \
     qml/ordersList.qml \
     images/stripes.png \
-    qml/Display2.qml
+    qml/Display2.qml \
+    qml/Digitalclk.qml
 
 RESOURCES += \
     resource.qrc
@@ -45,7 +47,11 @@ HEADERS += \
     clientsocket.h \
     ordermanager.h \
     client.h \
-    devicemanager.h
+    devicemanager.h \
+    digitalclock.h
+
+
+
 
 
 
