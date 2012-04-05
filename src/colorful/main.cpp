@@ -5,6 +5,8 @@
 #include <iostream>
 #include <QtSql>
 #include <QDebug>
+#include <QDate>
+#include <QtNetwork>
 
 #include "server.h"
 #include "client.h"
@@ -53,7 +55,7 @@ int main(int argc, char *argv[])
 
     Client client;
     QObject::connect(&orderManager, SIGNAL(pay(quint32)), &client, SLOT(sendPaiedOrder(quint32)));
-
+    QObject::connect(&server, SIGNAL(registered(quint32)), &client, SLOT(sendDeviceNO(quint32)));
 
     return a.exec();
 }

@@ -10,7 +10,7 @@ ListModel {
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE orderList');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, mac TEXT, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
                 var rs = tx.executeSql('SELECT * FROM orderList WHERE pay = ?', [Global.pay]);
                 var index = 0;
                 if (rs.rows.length > 0) {
@@ -22,6 +22,7 @@ ListModel {
 
                         ordersModel.append({"orderNO": item.orderNO,
                                             "seatNO": item.seatNO,
+                                            "mac": item.mac,
                                             "date": item.date,
                                             "time": item.time,
                                             "discount": item.discount,
@@ -107,11 +108,11 @@ ListModel {
         db.transaction(
             function(tx) {
                 tx.executeSql('DROP TABLE orderList');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderList(orderNO INTEGER key, seatNO INTEGER, mac TEXT, date DATE, time TIME, discount REAL, total REAL, pay INTEGER)');
                 var index = 0;
                 while (index < ordersModel.count) {
                     var item = ordersModel.get(index);
-                    tx.executeSql('INSERT INTO orderList VALUES(?,?,?,?,?,?,?)', [item.orderNO, item.seatNO, item.date, item.time, item.discount, item.total, item.pay]);
+                    tx.executeSql('INSERT INTO orderList VALUES(?,?,?,?,?,?,?,?)', [item.orderNO, item.seatNO, item.mac, item.date, item.time, item.discount, item.total, item.pay]);
                     index++;
                 }
             }

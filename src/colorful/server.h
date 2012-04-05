@@ -2,6 +2,7 @@
 #define SERVER_H
 
 #include <QTcpServer>
+#include <QUdpSocket>
 
 class Server : public QTcpServer
 {
@@ -12,12 +13,18 @@ public:
 
 signals:
     void refreshUi();
+    void registered(quint32 deviceNO);
 
 public slots:
     void sendRefreshUiSignal();
+    //void sendRegisteredSignal(quint32 deviceNO);
+    void processPendingDatagrams();
 
 private:
     void incomingConnection(int socketId);
+    void readRegistration(QDataStream &in);
+
+    QUdpSocket udpSocket;
 };
 
 #endif // SERVER_H

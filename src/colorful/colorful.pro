@@ -8,7 +8,8 @@ SOURCES += \
     server.cpp \
     clientsocket.cpp \
     ordermanager.cpp \
-    client.cpp
+    client.cpp \
+    devicemanager.cpp
 
 OTHER_FILES += \
     qml/login.qml \
@@ -43,7 +44,8 @@ HEADERS += \
     server.h \
     clientsocket.h \
     ordermanager.h \
-    client.h
+    client.h \
+    devicemanager.h
 
 
 

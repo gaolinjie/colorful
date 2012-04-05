@@ -12,13 +12,14 @@ public:
 
 signals:
     void dbChanged();
+    //void registering(quint32 deviceNO);
 
 private slots:
     void readClient();
 
 private:
     void readOrder(QDataStream &in);
-    void registerDevice(QDataStream &in);
+    //void readRegistration(QDataStream &in);
 
 private:
     quint16 nextBlockSize;

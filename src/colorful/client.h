@@ -13,7 +13,7 @@ public:
     
 public slots:
     void sendPaiedOrder(quint32 orderNO);
-
+    void sendDeviceNO(quint32 deviceNO);
 
 private slots:
     void sendData();
@@ -22,7 +22,7 @@ private slots:
     void error();
 
 private:
-    void connectToServer();
+    void connectToServer(const QString &ip);
     void closeConnection();
 
     QTcpSocket tcpSocket;
