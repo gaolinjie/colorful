@@ -73,12 +73,28 @@ void Client::sendDeviceNO(quint32 deviceNO)
         deviceIP = query.value(1).toString();
     }
 
+    // Begin Issue #4, gaolinjie, 2012-04-10 //
     // get host ip
+    QString hostIP;
+#ifdef WIN32
+//  Windows code here
+    QString localHostName = QHostInfo::localHostName();
+    QHostInfo info = QHostInfo::fromName(localHostName);
+    foreach(QHostAddress address,info.addresses())
+    {
+         if(address.protocol() == QAbstractSocket::IPv4Protocol)
+         {
+             hostIP = address.toString();
+         }
+    }
+#else
+//  UNIX code here
     QNetworkInterface *qni;
     qni = new QNetworkInterface();
     *qni = qni->interfaceFromName(QString("%1").arg("wlan0"));
-    QString hostIP;
     hostIP = qni->addressEntries().at(0).ip().toString();
+#endif
+    // End Issue #4 //
 
     out << quint16(0) << quint8('R') << deviceNO << hostIP << 0xFFFF;
 
