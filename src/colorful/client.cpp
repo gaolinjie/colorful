@@ -91,7 +91,8 @@ void Client::sendDeviceNO(quint32 deviceNO)
 //  UNIX code here
     QNetworkInterface *qni;
     qni = new QNetworkInterface();
-    *qni = qni->interfaceFromName(QString("%1").arg("wlan0"));
+    //*qni = qni->interfaceFromName(QString("%1").arg("wlan0"));
+    *qni = qni->interfaceFromName(QString("%1").arg("eth0"));
     hostIP = qni->addressEntries().at(0).ip().toString();
 #endif
     // End Issue #4 //

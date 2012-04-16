@@ -48,7 +48,6 @@ void ClientSocket::readClient()
 void ClientSocket::readOrder(QDataStream &in)
 {
     quint32 orderNO = 0;
-    quint16 suborderNO = 0;
     quint16 seatNO = 0;
     QString mac;
     QDate date;
@@ -62,7 +61,7 @@ void ClientSocket::readOrder(QDataStream &in)
 
     QSqlQuery query;
 
-    in >> orderNO >> suborderNO >> seatNO >> mac;
+    in >> orderNO >> seatNO >> mac;
     qDebug() << QString("%1").arg(orderNO) << QString("%1").arg(seatNO);
     QDateTime *datatime=new QDateTime(QDateTime::currentDateTime());
     date = datatime->date();
@@ -76,10 +75,9 @@ void ClientSocket::readOrder(QDataStream &in)
 
         qDebug() << QString("%1").arg(name) << QString("%1").arg(price) << QString("%1").arg(num);
 
-        query.exec("CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, suborderNO INTEGER, name TEXT, price REAL, num INTEGER)");
-        query.prepare("INSERT INTO orderItems(orderNO, suborderNO, name, price, num) VALUES (?, ?, ?, ?, ?)");
+        query.exec("CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, name TEXT, price REAL, num INTEGER)");
+        query.prepare("INSERT INTO orderItems(orderNO, name, price, num) VALUES (?, ?, ?, ?)");
         query.addBindValue(orderNO);
-        query.addBindValue(suborderNO);
         query.addBindValue(name);
         query.addBindValue(price);
         query.addBindValue(num);
