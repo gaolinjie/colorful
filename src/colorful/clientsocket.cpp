@@ -61,7 +61,7 @@ void ClientSocket::readOrder(QDataStream &in)
 
     QSqlQuery query;
 
-    in >> orderNO >> seatNO >> mac;
+    in >> orderNO >>seatNO >> mac;
     qDebug() << QString("%1").arg(orderNO) << QString("%1").arg(seatNO);
     QDateTime *datatime=new QDateTime(QDateTime::currentDateTime());
     date = datatime->date();

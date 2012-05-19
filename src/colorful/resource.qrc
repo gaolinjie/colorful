@@ -9,21 +9,26 @@
         <file>images/button-green.png</file>
         <file>images/button-blue.png</file>
         <file>images/button-.png</file>
-        <file>qml/OrdersModel.qml</file>
         <file>qml/main.qml</file>
         <file>qml/login.qml</file>
-        <file>qml/ItemsModel.qml</file>
-        <file>qml/itemsList.qml</file>
-        <file>qml/ItemsDelegate.qml</file>
         <file>qml/Button.qml</file>
         <file>js/global.js</file>
         <file>images/background.png</file>
         <file>qml/Display.qml</file>
         <file>js/calculator.js</file>
         <file>qml/start.qml</file>
-        <file>qml/ordersList.qml</file>
         <file>images/stripes.png</file>
         <file>qml/Display2.qml</file>
         <file>qml/Digitalclk.qml</file>
+        <file>images/left-Yellow.png</file>
+        <file>images/left-Green.png</file>
+        <file>qml/Button1.qml</file>
+        <file>qml/AddMenuGrid.qml</file>
+        <file>qml/OrdersList.qml</file>
+        <file>qml/ItemsList.qml</file>
+        <file>images/add.png</file>
+        <file>qml/OrderDialogRect.qml</file>
+        <file>qml/OrderDialog.qml</file>
+        <file>qml/KeyBoard.qml</file>
     </qresource>
 </RCC>

@@ -15,6 +15,7 @@
 // Begin Issue #5, lijunliang, 2012-04-05 //
 #include "digitalclock.h"
 // End Issue #5 //
+#include "ordersave.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,11 +36,15 @@ int main(int argc, char *argv[])
 
     OrderManager orderManager;
     QDeclarativeView view;
+    OrderSave ordersave;
+    DigitalClock systemClock;
     view.engine()->setOfflineStoragePath(path);
     view.rootContext()->setContextProperty("server", &server);
     view.rootContext()->setContextProperty("orderManager", &orderManager);
+
+    view.rootContext()->setContextProperty("ordersave", &ordersave);
     // Begin Issue #5, lijunliang, 2012-04-05 //
-    view.rootContext()->setContextProperty("systemClock",new DigitalClock);
+    view.rootContext()->setContextProperty("systemClock", &systemClock);
     // End Issue #5 //
     view.setSource(QUrl("qrc:/qml/start.qml"));
     view.show();

@@ -1,0 +1,7 @@
+import QtQuick 1.0
+
+Item {
+    id: dialogRect
+    width: 340; height: 40
+
+}

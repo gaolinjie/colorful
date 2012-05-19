@@ -8,21 +8,72 @@ Image {
     source: "qrc:/images/background.png"
 
     Component.onCompleted: {
-        itemsListLoader.source = ''
-        itemsListLoader.source = "qrc:/qml/itemsList.qml"
+        //itemsListLoader.source = ''
+        //itemsListLoader.source = "qrc:/qml/itemsList.qml"
     }
 
     signal loadLogin()
+    signal mainAddsignal()
+    signal mainOrderListUpdateSignal()
+    signal mainUpdateItemsignal()
+    signal initialOrderList()
+    signal mainDiaJumpsignal()
     function doOp(operation) { CalcEngine.doOperation2(operation) }
 
     Connections {
         id: serverConnection
         target: server;
         onRefreshUi: {
-            ordersListLoader.source = ""
-            ordersListLoader.source = "qrc:/qml/ordersList.qml"
-            itemsListLoader.source = ''
-            itemsListLoader.source = "qrc:/qml/itemsList.qml"
+            orderList.loadOrderList()
+            itemList.loadItemsData()
+        }
+    }
+
+    Connections {
+        id: addConnect
+        target: addMenuGrid
+        onAddsignal: {
+            mainAddsignal()
+        }
+    }
+
+    Connections {
+        id: updateOrderConnect
+        target: itemList
+        onOrderListUpdateSignal: {
+            mainOrderListUpdateSignal()
+        }
+    }
+
+    Connections {
+        id: updateItemConnect
+        target: orderList
+        onOrderItemUpdateSignal: {
+            mainUpdateItemsignal()
+            orderList.updateText()
+        }
+    }
+
+    Connections {
+        id: newOrderDialogConnect
+        target: newOrderDialog
+        onTonewMainfinish: {
+            orderList.loadOrderList()
+            orderList.finalorderListIndexNO()
+            orderList.currentIndex =Global.gorderIndex
+            itemList.loadItemsData()
+            orderList.updateText()
+        }
+    }
+
+    Connections {
+        id: modifyOrderDialogConnect
+        target: modifyOrderDialog
+        onTomodifyMainfinish: {
+            orderList.loadOrderList()
+            orderList.currentIndex =Global.gorderIndex
+            itemList.loadItemsData()
+            orderList.updateText()
         }
     }
 
@@ -56,7 +107,7 @@ Image {
         Digitalclk {
             width: 230; height: 30
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right; anchors.leftMargin: 15
+            anchors.right: parent.right; anchors.rightMargin: 15
         }
         // End Issue #5 //
     }
@@ -64,8 +115,8 @@ Image {
     Rectangle {
         id: ordersRect
         width: 600; height: 400
+        x: 15
         anchors.top: header.bottom; anchors.topMargin: 20
-        anchors.left: header.left; anchors.leftMargin: 25
         color: "#e3e3e3"
         radius: 10
         smooth: true
@@ -91,10 +142,10 @@ Image {
                     ordersRectLabel.color = "#78b117"
                     finishRectLabel.color = "grey"
                     Global.pay = "0"
-                    ordersListLoader.source = ""
-                    ordersListLoader.source = "qrc:/qml/ordersList.qml"
-                    itemsListLoader.source = ''
-                    itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                    Global.oldorderNO ="";
+                    Global.gorderIndex = 0;
+                    orderList.loadOrderList()
+                    itemList.loadItemsData()
                 }
             }
         }
@@ -120,10 +171,10 @@ Image {
                     finishRectLabel.color = "#78b117"
                     ordersRectLabel.color = "grey"
                     Global.pay = "1"
-                    ordersListLoader.source = ""
-                    ordersListLoader.source = "qrc:/qml/ordersList.qml"
-                    itemsListLoader.source = ''
-                    itemsListLoader.source = "qrc:/qml/itemsList.qml"
+                    Global.oldorderNO ="";
+                    Global.gorderIndex = 0;
+                    orderList.loadOrderList()
+                    itemList.loadItemsData()
                 }
             }
         }
@@ -182,127 +233,73 @@ Image {
             color: "grey"
         }
 
-        Item {
-            Loader {
-                id: ordersListLoader
-                source: "qrc:/qml/ordersList.qml"
-            }
+        OrdersList{
+            id: orderList
             anchors.left: parent.left
             anchors.top: parent.top; anchors.topMargin: 68
-        }
-
-        Component {
-            id: orderDelegate
-
-            Item {
-                id: wraper
-                width: 600; height: 30
-                Component.onCompleted: {
-                    sumText.text = wraper.ListView.view.model.get(0).total
-                    discText.text = wraper.ListView.view.model.get(0).discount
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {
-                        wraper.ListView.view.currentIndex = index
-                        Global.orderNO = orderNO
-                        itemsListLoader.source = ''
-                        itemsListLoader.source = "qrc:/qml/itemsList.qml"
-                        sumText.text = total
-                        discText.text = discount
-                    }
-                }
-
-                Rectangle {
-                    id: orderRect
-                    width: 520; height: 30
-                    radius: 8
-                    anchors.left: parent.left; anchors.leftMargin: 40
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: wraper.ListView.isCurrentItem ? "#f4a83d" : "white"
-                    smooth: true
-                    border.color: "grey"
-                    border.width: 1
-
-                    Text {
-                        id: orderNOText
-                        text: orderNO
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 10
-                        color: "black"
-                    }
-
-                    Text {
-                        id: seatNOText
-                        text: seatNO
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 120
-                        color: "black"
-                    }
-
-                    Text {
-                        id: dateText
-                        text: date
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 180
-                        color: "black"
-                    }
-
-                    Text {
-                        id: timeText
-                        text: time
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 290
-                        color: "black"
-                    }
-
-                    Text {
-                        id: discountText
-                        text: discount
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 393
-                        color: "black"
-                    }
-
-
-                    Text {
-                        id: totalText
-                        text: total
-                        font.pixelSize: 15
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left; anchors.leftMargin: 480
-                        color: "black"
-                    }
-                }
-
-                Image {
-                    source: "qrc:/images/minus.png"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: orderRect.left; anchors.rightMargin: 7
-                    visible: wraper.ListView.isCurrentItem
-                }
-
-                Image {
-                    id: next
-                    source: "qrc:/images/next.png"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: orderRect.right; anchors.leftMargin: -10
-                    visible: wraper.ListView.isCurrentItem
-                }
+            Component.onCompleted: {
+                orderList.loadOrderList()
+                initialOrderList()
             }
+            //Component.onDestruction: orderList.saveOrderList()
         }
+
+        Rectangle  {
+               id: ordersButton
+               width: 600; height: 60
+               anchors.bottom: parent.bottom; anchors.bottomMargin: 0
+               anchors.left: parent.left; anchors.leftMargin: 0
+               color: "#cd96cd"
+               radius: 0
+               smooth: true
+               opacity: 1
+               Button {
+                   id: newOrderButton
+                   width: 120; height: 50
+                   anchors.top:parent.top; anchors.topMargin: 5
+                   anchors.left:parent.left; anchors.leftMargin: 150
+                   color: 'red'
+                   operation: "新建订单"
+                   textSize: 22
+
+                   onOperate: {
+                       newOrderDialog.x=620
+                       modifyOrderDialog.x=1100
+                       detailRect.x = 1100
+                       rightbord.x = 1100
+                       addMenuItem.y = 768
+                       leftbord.x = 15
+                       Global.dialogTextNo=2
+                       mainDiaJumpsignal()
+                   }
+               }
+               Button {
+                   id: modifyButton
+                   width: 120; height: 50
+                   anchors.top:parent.top; anchors.topMargin: 5
+                   anchors.right:ordersButton.right; anchors.rightMargin: 150
+                   color: 'red'
+                   operation: "修改订单"
+                   textSize: 22
+
+                   onOperate: {
+                       modifyOrderDialog.x=620
+                       newOrderDialog.x=1100
+                       detailRect.x = 1100
+                       rightbord.x = 1100
+                       addMenuItem.y = 768
+                       leftbord.x = 15
+                       Global.dialogTextNo = 2
+                        mainDiaJumpsignal()
+                   }
+               }
+          }
     }
 
     Rectangle {
         id: detailRect
-        width: 355; height: 400
-        anchors.left: ordersRect.right; anchors.leftMargin: 20
+        width: 380; height: 400
+        x: 630
         anchors.top: ordersRect.top
         color: "#e3e3e3"
         radius: 10
@@ -329,7 +326,7 @@ Image {
             text: "菜名"
             font.pixelSize: 15
             anchors.top: parent.top; anchors.topMargin: 30
-            anchors.left: parent.left; anchors.leftMargin: 50
+            anchors.left: parent.left; anchors.leftMargin: 40
             color: "grey"
         }
 
@@ -360,201 +357,236 @@ Image {
             color: "grey"
         }
 
-        Item {
-            Loader {
-                id: itemsListLoader
-                source: "qrc:/qml/itemsList.qml"
-            }
+        ItemsList{
+            id: itemList
             anchors.left: parent.left
             anchors.top: parent.top; anchors.topMargin: 68
-        }
-    }
-
-    Rectangle {
-        id: dashbord
-        width: 355; height: 150
-        anchors.left: detailRect.left
-        anchors.top: detailRect.bottom; anchors.topMargin: 20
-        color: "black"
-        radius: 10
-        smooth: true
-
-        gradient: Gradient {
-            GradientStop { position: 0.0;
-                           color: Qt.rgba(0.5,0.5,0.5,0.5) }
-            GradientStop { position: 0.7; color: "black" }
-            GradientStop { position: 1.0; color: "black" }
+            Component.onCompleted: itemList.loadItemsData()
+            //Component.onDestruction: itemList.saveItemsData()
         }
 
-        Text {
-            id: sumTitle
-            text: "合 计:"
-            anchors.top: parent.top; anchors.topMargin: 15
-            anchors.left: parent.left; anchors.leftMargin: 110
-            font.pixelSize: 16
-            color: "white"
+        Rectangle  {
+               id: detailButton
+               width: 380; height: 60
+               anchors.bottom: parent.bottom; anchors.bottomMargin: 0
+               anchors.left: parent.left; anchors.leftMargin: 0
+               color: "#cd96cd"
+               radius: 0
+               smooth: true
+               opacity: 1
+               Button {
+                   id: addButton
+                   width: 120; height: 50
+                   anchors.top:parent.top; anchors.topMargin: 5
+                   anchors.right:parent.right; anchors.rightMargin: 117
+                   color: 'red'
+                   operation: "增加菜品"
+                   textSize: 22
+
+                   onOperate: {
+                        addMenuItem.y = 490
+                        rightbord.x = 1024
+                        leftbord.x = 1024
+
+                   }
+               }
+         }
+    }
+    Item{
+            id: rightbord
+            width: 380; height: 280
+            opacity: 1
+            x: 630
+            anchors.top:  detailRect.bottom; anchors.topMargin: 0
+            Rectangle {
+                id: dashbord
+                width: 380; height: 150
+                anchors.left: parent.left
+                anchors.top: parent.top; anchors.topMargin: 20
+                color: "black"
+                radius: 10
+                smooth: true
+                opacity: 1
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0;
+                                   color: Qt.rgba(0.5,0.5,0.5,0.5) }
+                    GradientStop { position: 0.7; color: "black" }
+                    GradientStop { position: 1.0; color: "black" }
+                }
+
+                Text {
+                    id: sumTitle
+                    text: "合 计:"
+                    anchors.top: parent.top; anchors.topMargin: 15
+                    anchors.left: parent.left; anchors.leftMargin: 110
+                    font.pixelSize: 16
+                    color: "white"
+                }
+
+                Text {
+                    id: sumText
+                    text: Global.orderNO
+                    anchors.top: sumTitle.top
+                    anchors.right: parent.right; anchors.rightMargin: 110
+                    font.pixelSize: 16
+                    color: "white"
+                }
+
+                Text {
+                    id: discTitle
+                    text: "折 扣:"
+                    anchors.top: sumTitle.bottom; anchors.topMargin: 5
+                    anchors.left: sumTitle.left
+                    font.pixelSize: 16
+                    color: "white"
+                }
+
+                Text {
+                    id: discText
+                    text: ""
+                    anchors.top: sumText.bottom; anchors.topMargin: 5
+                    anchors.right: sumText.right
+                    font.pixelSize: 16
+                    color: "white"
+                }
+
+                Text {
+                    id: totalText
+                    text: sumText.text - discText.text
+                    anchors.bottom: parent.bottom; anchors.bottomMargin: 15
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: 55
+                    color: "white"
+                }
+            }
+            Button {
+                id: cashButton
+                width: dashbord.width; height: 40
+                anchors.left: dashbord.left
+                anchors.top: dashbord.bottom; anchors.topMargin: 10
+                color: 'green'
+                operation: "现金收取"
+                textSize: 16
+
+                onOperate: {
+                    foreground.visible = true
+                    cashDialog.y = 0
+                    keyboard.y = 400
+                }
+            }
+            Button {
+                id: creditButton
+                width: dashbord.width; height: 40
+                anchors.left: dashbord.left
+                anchors.top: cashButton.bottom; anchors.topMargin: 10
+                color: 'purple'
+                operation: "刷卡支付"
+                textSize: 16
+
+                onOperate: {
+                    foreground.visible = true
+                    cardDialog.y = 0
+                }
+            }
+    }
+    Item{
+        id: leftbord
+        opacity: 1
+        x:15
+        anchors.top:  ordersRect.bottom; anchors.topMargin: 0
+        Button {
+            id: openCashboxButton
+            width: 295; height: 40
+            anchors.left: parent.left
+            anchors.top: parent.top; anchors.topMargin: 20
+            operation: "打开钱箱"
+            textSize: 16
+        }
+        Button {
+            id: lockSystemButton
+            width: 295; height: 40
+            anchors.left: openCashboxButton.right; anchors.leftMargin: 10
+            anchors.top: openCashboxButton.top
+            operation: "锁定系统"
+            textSize: 16
+
+            onOperate: {
+                loadLogin()
+            }
         }
 
-        Text {
-            id: sumText
-            text: Global.orderNO
-            anchors.top: sumTitle.top
-            anchors.right: parent.right; anchors.rightMargin: 110
-            font.pixelSize: 16
-            color: "white"
+        Button {
+            id: settingsButton
+            width: 295; height: 40
+            anchors.left: parent.left
+            anchors.top: openCashboxButton.bottom; anchors.topMargin: 10
+            operation: "系统设置"
+            textSize: 16
         }
 
-        Text {
-            id: discTitle
-            text: "折 扣:"
-            anchors.top: sumTitle.bottom; anchors.topMargin: 5
-            anchors.left: sumTitle.left
-            font.pixelSize: 16
-            color: "white"
+        Button {
+            id: logoutButton
+            width: 295; height: 40
+            anchors.left: settingsButton.right; anchors.leftMargin: 10
+            anchors.top: settingsButton.top
+            operation: "注销系统"
+            textSize: 16
         }
 
-        Text {
-            id: discText
-            text: ""
-            anchors.top: sumText.bottom; anchors.topMargin: 5
-            anchors.right: sumText.right
-            font.pixelSize: 16
-            color: "white"
+        Button {
+            id: changeDiscountButton
+            width: 295; height: 40
+            anchors.left: parent.left
+            anchors.top: settingsButton.bottom; anchors.topMargin: 10
+            operation: "修改折扣"
+            textSize: 16
         }
 
-        Text {
-            id: totalText
-            text: sumText.text - discText.text
-            anchors.bottom: parent.bottom; anchors.bottomMargin: 15
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: 55
-            color: "white"
+        Button {
+            id: accountingButton
+            width: 295; height: 40
+            anchors.left: changeDiscountButton.right; anchors.leftMargin: 10
+            anchors.top: changeDiscountButton.top
+            operation: "核算收入"
+            textSize: 16
         }
-    }
 
-    Button {
-        id: cashButton
-        width: dashbord.width; height: 40
-        anchors.left: dashbord.left
-        anchors.top: dashbord.bottom; anchors.topMargin: 10
-        color: 'green'
-        operation: "现金收取"
-        textSize: 16
-
-        onOperate: {
-            foreground.visible = true
-            cashDialog.y = 0
-            keyboard.y = 400
+        Button {
+            id: testButton
+            width: 295; height: 40
+            anchors.left: parent.left
+            anchors.top: changeDiscountButton.bottom; anchors.topMargin: 20
+            operation: "设备测试"
+            textSize: 16
         }
-    }
 
-    Button {
-        id: creditButton
-        width: dashbord.width; height: 40
-        anchors.left: dashbord.left
-        anchors.top: cashButton.bottom; anchors.topMargin: 10
-        color: 'purple'
-        operation: "刷卡支付"
-        textSize: 16
-
-        onOperate: {
-            foreground.visible = true
-            cardDialog.y = 0
+        Button {
+            id: printButton
+            width: 295; height: 40
+            anchors.left: testButton.right; anchors.leftMargin: 10
+            anchors.top: testButton.top
+            operation: "打印收据"
+            textSize: 16
         }
-    }
 
-    Button {
-        id: openCashboxButton
-        width: 295; height: 40
-        anchors.left: ordersRect.left
-        anchors.top: ordersRect.bottom; anchors.topMargin: 20
-        operation: "打开钱箱"
-        textSize: 16
-    }
-
-    Button {
-        id: lockSystemButton
-        width: 295; height: 40
-        anchors.left: openCashboxButton.right; anchors.leftMargin: 10
-        anchors.top: openCashboxButton.top
-        operation: "锁定系统"
-        textSize: 16
-
-        onOperate: {
-            loadLogin()
+        Button {
+            id: analyseButton
+            width: 295; height: 40
+            anchors.left: parent.left
+            anchors.top: testButton.bottom; anchors.topMargin: 10
+            operation: "销售分析"
+            textSize: 16
         }
-    }
 
-    Button {
-        id: settingsButton
-        width: 295; height: 40
-        anchors.left: ordersRect.left
-        anchors.top: openCashboxButton.bottom; anchors.topMargin: 10
-        operation: "系统设置"
-        textSize: 16
-    }
-
-    Button {
-        id: logoutButton
-        width: 295; height: 40
-        anchors.left: settingsButton.right; anchors.leftMargin: 10
-        anchors.top: settingsButton.top
-        operation: "注销系统"
-        textSize: 16
-    }
-
-    Button {
-        id: changeDiscountButton
-        width: 295; height: 40
-        anchors.left: ordersRect.left
-        anchors.top: settingsButton.bottom; anchors.topMargin: 10
-        operation: "修改折扣"
-        textSize: 16
-    }
-
-    Button {
-        id: accountingButton
-        width: 295; height: 40
-        anchors.left: changeDiscountButton.right; anchors.leftMargin: 10
-        anchors.top: changeDiscountButton.top
-        operation: "核算收入"
-        textSize: 16
-    }
-
-    Button {
-        id: testButton
-        width: 295; height: 40
-        anchors.left: ordersRect.left
-        anchors.top: changeDiscountButton.bottom; anchors.topMargin: 20
-        operation: "设备测试"
-        textSize: 16
-    }
-
-    Button {
-        id: printButton
-        width: 295; height: 40
-        anchors.left: testButton.right; anchors.leftMargin: 10
-        anchors.top: testButton.top
-        operation: "打印收据"
-        textSize: 16
-    }
-
-    Button {
-        id: analyseButton
-        width: 295; height: 40
-        anchors.left: ordersRect.left
-        anchors.top: testButton.bottom; anchors.topMargin: 10
-        operation: "销售分析"
-        textSize: 16
-    }
-
-    Button {
-        id: othersButton
-        width: 295; height: 40
-        anchors.left: analyseButton.right; anchors.leftMargin: 10
-        anchors.top: analyseButton.top
-        operation: "其他功能"
-        textSize: 16
+        Button {
+            id: othersButton
+            width: 295; height: 40
+            anchors.left: analyseButton.right; anchors.leftMargin: 10
+            anchors.top: analyseButton.top
+            operation: "其他功能"
+            textSize: 16
+        }
     }
 
     Rectangle {
@@ -920,4 +952,280 @@ Image {
             }
         }
     }
+    Item {
+        id: addMenuItem
+        width: 1024; height: 278
+        y:768
+        opacity: 1
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+        Rectangle{
+            width: 1024; height: 278
+            opacity: 0.5
+            color:"white"
+          /*gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: "#E0E0E0" }
+                GradientStop { position: 0.2; color: "#5B5B5B" }
+                GradientStop { position: 0.4; color: "#272727"  }
+                GradientStop { position: 0.6; color: "#272727" }
+                GradientStop { position: 0.8; color: "#5B5B5B"  }
+                GradientStop { position: 1  ; color: "#E0E0E0" }
+            } */
+        }
+        Rectangle{
+        id: addTitle
+        width: 1024; height: 50
+        anchors.right: parent.right; anchors.rightMargin: 0
+        anchors.bottom: parent.bottom; anchors.bottomMargin: 0
+        Rectangle {
+            id: titleBackground
+            anchors.fill: addTitle; radius: 0; color: "grey"; opacity: 0.5
+        }
+         Image {
+            id: addBackButton
+            source: "qrc:/images/left-Yellow.png"
+         //   width: 60; height:50
+            anchors.right: parent.right; anchors.rightMargin: 0
+            anchors.bottom: parent.bottom; anchors.bottomMargin: 0
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    addBackButton.source = "qrc:/images/left-Green.png"
+                }
+                onReleased:
+                           {
+                    addBackButton.source = "qrc:/images/left-Yellow.png"
+                    addMenuItem.y = 768
+                    rightbord.x = 630
+                    leftbord.x = 15
+                    Global.addMenuType = 1                    
+                 //   addMenuGrid.source = ""
+                    CalcEngine.addMenuBack()
+                }
+             }
+          }
+        }
+
+         Button1 {
+            id: addMenuButton1
+            width: 100; height: 50
+            anchors.left: parent.left; anchors.leftMargin:0
+            anchors.bottom: parent.bottom; anchors.bottomMargin:0
+            operation: "特色菜品"
+            textSize: 22
+            color: "blue"
+            buttonNo: 1
+
+            onOperate: {
+                  addMenuButton1.color = "blue"
+                  addMenuButton2.color = "green"
+                  addMenuButton3.color = "green"
+                  addMenuButton4.color = "green"
+                  addMenuButton5.color = "green"
+                  addMenuButton6.color = "green"
+                  addMenuButton7.color = "green"
+                  Global.addMenuType = buttonNo
+                  CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton2
+            width: 100; height: 50
+            anchors.left: addMenuButton1.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "畅销菜品"
+            textSize: 22
+            color: "green"
+            buttonNo: 2
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "blue"
+                addMenuButton3.color = "green"
+                addMenuButton4.color = "green"
+                addMenuButton5.color = "green"
+                addMenuButton6.color = "green"
+                addMenuButton7.color = "green"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton3
+            width: 100; height: 50
+            anchors.left: addMenuButton2.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "酒水"
+            textSize: 22
+            color: "green"
+            buttonNo: 3
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "green"
+                addMenuButton3.color = "blue"
+                addMenuButton4.color = "green"
+                addMenuButton5.color = "green"
+                addMenuButton6.color = "green"
+                addMenuButton7.color = "green"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton4
+            width: 100; height: 50
+            anchors.left: addMenuButton3.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "茶点"
+            textSize: 22
+            color: "green"
+            buttonNo: 4
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "green"
+                addMenuButton3.color = "green"
+                addMenuButton4.color = "blue"
+                addMenuButton5.color = "green"
+                addMenuButton6.color = "green"
+                addMenuButton7.color = "green"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton5
+            width: 100; height: 50
+            anchors.left: addMenuButton4.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "面点"
+            textSize: 22
+            color: "green"
+            buttonNo: 5
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "green"
+                addMenuButton3.color = "green"
+                addMenuButton4.color = "green"
+                addMenuButton5.color = "blue"
+                addMenuButton6.color = "green"
+                addMenuButton7.color = "green"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton6
+            width: 100; height: 50
+            anchors.left: addMenuButton5.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "海鲜"
+            textSize: 22
+            color: "green"
+            buttonNo: 6
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "green"
+                addMenuButton3.color = "green"
+                addMenuButton4.color = "green"
+                addMenuButton5.color = "green"
+                addMenuButton6.color = "blue"
+                addMenuButton7.color = "green"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+         Button1 {
+            id: addMenuButton7
+            width: 100; height: 50
+            anchors.left: addMenuButton6.right; anchors.leftMargin:2
+            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
+            operation: "中厨"
+            textSize: 22
+            color: "green"
+            buttonNo: 7
+
+            onOperate: {
+                addMenuButton1.color = "green"
+                addMenuButton2.color = "green"
+                addMenuButton3.color = "green"
+                addMenuButton4.color = "green"
+                addMenuButton5.color = "green"
+                addMenuButton6.color = "green"
+                addMenuButton7.color = "blue"
+                Global.addMenuType = buttonNo
+                CalcEngine.changeAddMenuData()
+            }
+         }
+
+         AddMenuGrid{
+             id: addMenuGrid
+            // signal addsignal(string lname, double lprice, int ltype)
+             anchors.left: parent.left; anchors.leftMargin: 10
+             anchors.top: parent.top; anchors.topMargin: 15
+             Component.onCompleted: addMenuGrid.loadSumMenuData()
+             Component.onDestruction: addMenuGrid.saveSumMenuData()  //此时保存的可能只是一种类型的数据，因此不能保存
+         }
+       /*  Loader {
+              id: addMenuGrid
+              anchors.left: parent.left; anchors.leftMargin: 10
+              anchors.top: parent.top; anchors.topMargin: 15
+              source: "qrc:/qml/AddMenuGrid.qml"
+          }*/
+     }
+
+    OrderDialogRect{
+        id: newOrderDialog
+        x: 1024;y:70
+        property string title: "新建订单"
+        property int orderNo: 1
+        property int seatNo: 2
+        property int discountNo: 3
+        property int orderRectNo: 1
+        Behavior on x {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+        onToMaincancel:{
+            newOrderDialog.x = 1024
+            detailRect.x = 630
+            rightbord.x = 630
+        }
+        onTonewMainfinish:{
+            newOrderDialog.x = 1024
+            detailRect.x = 630
+            rightbord.x = 630
+        }
+    }
+    OrderDialogRect{
+        id: modifyOrderDialog
+        x: 1024;y:70
+        property string title: "修改订单"
+        property int orderNo: 1
+        property int seatNo: 2
+        property int discountNo: 3
+        property int orderRectNo: 2
+        Behavior on x {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+        onToMaincancel:{
+            modifyOrderDialog.x = 1024
+            detailRect.x = 630
+            rightbord.x = 630
+        }
+        onTomodifyMainfinish:{
+            modifyOrderDialog.x = 1024
+            detailRect.x = 630
+            rightbord.x = 630
+        }
+    }
 }
+
+
+
+
+

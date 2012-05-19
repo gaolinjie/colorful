@@ -18,3 +18,46 @@ void OrderManager::payOrder(quint32 orderNO)
 
     emit pay(orderNO);
 }
+
+/*bool  OrderManager::haveDataManualOrder()
+{
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS manuaOrder(orderNO INTEGER key)");
+    query.exec("select * from student");
+    while ( query.next() ){return true;}
+    return false;
+}*/
+qint32  OrderManager::genManualOrder()
+{
+    qint32 orderNo;
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS manuaOrder(orderNO INTEGER key)");
+    query.exec("select * from manuaOrder");
+    while ( query.next() )
+    {
+        orderNo = query.value(0).toInt();
+        orderNo++;
+        return orderNo;
+    }
+    orderNo = 900000000;
+    return orderNo;
+}
+
+void OrderManager::saveManualOrder(qint32 orderNo)
+{
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS manuaOrder(orderNO INTEGER key)");
+    query.exec("select * from manuaOrder");
+    if ( query.next() )
+    {
+        query.prepare("UPDATE manuaOrder SET orderNO = ? ");
+        query.addBindValue(orderNo);
+        query.exec();
+    }
+    else
+    {
+        query.prepare("insert into manuaOrder (orderNO) values(?)");
+        query.addBindValue(orderNo);
+        query.exec();
+     }
+}

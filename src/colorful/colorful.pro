@@ -10,7 +10,8 @@ SOURCES += \
     ordermanager.cpp \
     client.cpp \
     devicemanager.cpp \
-    digitalclock.cpp
+    digitalclock.cpp \
+    ordersave.cpp
 
 OTHER_FILES += \
     qml/login.qml \
@@ -18,9 +19,6 @@ OTHER_FILES += \
     images/logo.png \
     images/minus.png \
     images/next.png \
-    qml/OrdersModel.qml \
-    qml/ItemsModel.qml \
-    qml/ItemsDelegate.qml \
     images/button-.png \
     images/button-blue.png \
     images/button-green.png \
@@ -29,15 +27,25 @@ OTHER_FILES += \
     images/display.png \
     qml/Button.qml \
     js/global.js \
-    qml/itemsList.qml \
     images/background.png \
     qml/Display.qml \
     js/calculator.js \
     qml/start.qml \
-    qml/ordersList.qml \
     images/stripes.png \
     qml/Display2.qml \
-    qml/Digitalclk.qml
+    qml/Digitalclk.qml \
+    images/left Green.png \
+    images/left Green.png \
+    images/left-Green.png \
+    images/left-Yellow.png \
+    qml/Button1.qml \
+    qml/AddMenuGrid.qml \
+    qml/OrdersList.qml \
+    qml/ItemsList.qml \
+    images/add.png \
+    qml/OrderDialogRect.qml \
+    qml/OrderDialog.qml \
+    qml/KeyBoard.qml
 
 RESOURCES += \
     resource.qrc
@@ -48,7 +56,47 @@ HEADERS += \
     ordermanager.h \
     client.h \
     devicemanager.h \
-    digitalclock.h
+    digitalclock.h \
+    ordersave.h
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
