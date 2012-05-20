@@ -146,6 +146,9 @@ Image {
                     Global.gorderIndex = 0;
                     orderList.loadOrderList()
                     itemList.loadItemsData()
+                    newOrderButton.height = 50
+                    modifyButton.height = 50
+                    addButton.height = 50
                 }
             }
         }
@@ -175,6 +178,9 @@ Image {
                     Global.gorderIndex = 0;
                     orderList.loadOrderList()
                     itemList.loadItemsData()
+                    newOrderButton.height = 0
+                    modifyButton.height = 0
+                    addButton.height = 0
                 }
             }
         }
@@ -472,7 +478,7 @@ Image {
                 onOperate: {
                     foreground.visible = true
                     cashDialog.y = 0
-                    keyboard.y = 400
+                    keyboardRect.y = 400
                 }
             }
             Button {
@@ -595,6 +601,10 @@ Image {
         color: "black"
         opacity: 0.6
         visible: false
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+        }
     }
 
     Item {
@@ -602,6 +612,27 @@ Image {
         width: 600; height: 400
         anchors.horizontalCenter: parent.horizontalCenter
         y: 768
+        Connections {
+            target: keyBoard
+            onTextUpdatesignal: {
+                 display.text = Global.gtextIn
+            }
+            onCancelsignal: {
+                cashDialog.y = 768
+                keyboardRect.y = 768
+                foreground.visible = false
+                display.text = "0.0"
+                Global.gtextIn =""
+            }
+            onFinishsignal: {
+                cashDialog.y = 768
+                keyboardRect.y = 768
+                //foreground.visible = false
+                Global.gtextIn =""
+                keyboardRect2.y = 400
+                dealyTimer.running = true
+            }
+        }
 
         Behavior on y {
             NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
@@ -645,7 +676,7 @@ Image {
             font.bold: true
             color: "grey"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 20
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 40
         }
 
         Text {
@@ -654,7 +685,7 @@ Image {
             font.pixelSize: 56
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 40
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 70
         }
 
         Text {
@@ -664,17 +695,17 @@ Image {
             font.bold: true
             color: "grey"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 120
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
         }
 
         Display2 {
             id: display
-            width: box.width
+            width: 230
             height: 80
             color: "black"
             radius: 10
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 150
+            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 180
             text: "0.0"
 
             gradient: Gradient {
@@ -685,26 +716,9 @@ Image {
             }
         }
 
-        Button {
-            id: cancelButton
-            width: 260; height: 50
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cashDialogHeader.bottom; anchors.topMargin: 260
-            operation: "取 消"
-            textSize: 18
-
-            onOperate: {
-                cashDialog.y = 768
-                keyboard.y = 768
-                //foreground.visible = false
-                dealyTimer.running = true
-
-            }
-        }
-
         Timer {
             id: dealyTimer
-            interval: 500; running: false; //repeat: true
+            interval: 50; running: false; //repeat: true
             onTriggered: {
                 changeDialog.y = 0
             }
@@ -719,6 +733,16 @@ Image {
 
         Behavior on y {
             NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+
+        Connections {
+            target: keyBoard2
+            onCancelsignal: {
+                changeDialog.y = 768
+                keyboardRect2.y = 768
+                foreground.visible = false
+                display.text = "0.0"
+            }
         }
 
         Rectangle {
@@ -820,12 +844,15 @@ Image {
 
             onOperate: {
                 changeDialog.y = 768
+                keyboardRect2.y = 768
                 foreground.visible = false
                 display.text = "0.0"
-                CalcEngine.lastOp = ""
-                CalcEngine.realText = ""
+               //CalcEngine.lastOp = ""
+               //CalcEngine.realText = ""
                 orderManager.payOrder(Global.orderNO)
-                Global.orderNO = -1
+                //Global.orderNO = -1
+                Global.oldorderNO = ""
+                Global.gorderIndex = 0
                 server.sendRefreshUiSignal()
             }
         }
@@ -908,7 +935,7 @@ Image {
     }
 
     Rectangle {
-        id: keyboard
+        id: keyboardRect
         width: parent.width; height: 368
         color: "#343434";
         y: 768
@@ -919,37 +946,26 @@ Image {
 
         Image { source: "qrc:/images/stripes.png"; fillMode: Image.Tile; anchors.fill: parent; opacity: 0.3 }
 
-        Column {
-            id: box; spacing: 10
+        KeyBoard {
+            id: keyBoard
             anchors.centerIn: parent
+        }
+    }
 
-            Column {
-                id: column; spacing: 10
+    Rectangle {
+        id: keyboardRect2
+        width: parent.width; height: 368
+        color: "#343434";
+        y: 768
 
-                Grid {
-                    id: grid; rows: 4; columns: 3; spacing: 8
+        Behavior on y {
+            NumberAnimation { duration: 400; easing.type: Easing.OutQuint}
+        }
+        Image { source: "qrc:/images/stripes.png"; fillMode: Image.Tile; anchors.fill: parent; opacity: 0.3 }
 
-                    Button { width: 70; height: 60; operation: "7"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "8"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "9"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "4"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "5"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "6"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "1"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "2"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "3"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "\u2190"; color: "red"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "0"; textSize: 20}
-                    Button { width: 70; height: 60; operation: "OK"; color: "green"; textSize: 20
-                        onOperate: {
-                            cashDialog.y = 768
-                            keyboard.y = 768
-                            //foreground.visible = false
-                            dealyTimer.running = true
-                        }
-                    }
-                }
-            }
+        KeyBoard {
+            id: keyBoard2
+            anchors.centerIn: parent
         }
     }
     Item {
@@ -964,15 +980,6 @@ Image {
             width: 1024; height: 278
             opacity: 0.5
             color:"white"
-          /*gradient: Gradient {
-                GradientStop { position: 0.0;
-                               color: "#E0E0E0" }
-                GradientStop { position: 0.2; color: "#5B5B5B" }
-                GradientStop { position: 0.4; color: "#272727"  }
-                GradientStop { position: 0.6; color: "#272727" }
-                GradientStop { position: 0.8; color: "#5B5B5B"  }
-                GradientStop { position: 1  ; color: "#E0E0E0" }
-            } */
         }
         Rectangle{
         id: addTitle
