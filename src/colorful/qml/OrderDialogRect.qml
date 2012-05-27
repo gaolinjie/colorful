@@ -38,6 +38,19 @@ Item {
             toMaincancel()
         }
         onFinishsignal: {
+            switch(Global.dialogTextNo){
+    /*            case(1):
+                    Global.newOrderNo= Global.gtextIn;
+                    break;*/
+                case(2):
+                    Global.newSeatNo= Global.gtextIn;
+                    break;
+                case(3):
+                    Global.newDiscount= Global.gtextIn;
+                    break;
+                default:
+                    break;
+            }
             Global.gtextIn = ""
             textIn1.inText= Global.gtextIn;
             textIn2.inText= Global.gtextIn;
@@ -64,6 +77,19 @@ Item {
 
              rectDiaChanged()
          }
+    }
+
+    Connections {
+        target: textIn2
+        onTextNoChange: {
+            rectDiaChanged()
+        }
+    }
+    Connections {
+        target: textIn3
+        onTextNoChange: {
+            rectDiaChanged()
+        }
     }
 
     Rectangle {
