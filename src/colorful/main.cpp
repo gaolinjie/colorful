@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
     view.engine()->setOfflineStoragePath(path);
     view.rootContext()->setContextProperty("server", &server);
     view.rootContext()->setContextProperty("orderManager", &orderManager);
-
     view.rootContext()->setContextProperty("ordersave", &ordersave);
+
     // Begin Issue #5, lijunliang, 2012-04-05 //
     view.rootContext()->setContextProperty("systemClock", &systemClock);
     // End Issue #5 //

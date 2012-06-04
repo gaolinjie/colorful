@@ -45,7 +45,9 @@ OTHER_FILES += \
     images/add.png \
     qml/OrderDialogRect.qml \
     qml/OrderDialog.qml \
-    qml/KeyBoard.qml
+    qml/KeyBoard.qml \
+    qml/DialogRect.qml.autosave \
+    qml/PosMenuModel.qml.autosave
 
 RESOURCES += \
     resource.qrc
