@@ -843,6 +843,10 @@ Image {
             color: "green"
 
             onOperate: {
+                Global.renderMoney = totalDue2.text
+                Global.giveMoney = tendered2.text
+                Global.changeMoney = change.text
+                printOrder.printMenutoForeground(Global.orderNO,Global.renderMoney,Global.giveMoney,Global.changeMoney)
                 changeDialog.y = 768
                 keyboardRect2.y = 768
                 foreground.visible = false

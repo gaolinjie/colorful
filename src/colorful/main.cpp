@@ -16,6 +16,7 @@
 #include "digitalclock.h"
 // End Issue #5 //
 #include "ordersave.h"
+#include "print.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,10 +39,12 @@ int main(int argc, char *argv[])
     QDeclarativeView view;
     OrderSave ordersave;
     DigitalClock systemClock;
+    Print  printOrder;
     view.engine()->setOfflineStoragePath(path);
     view.rootContext()->setContextProperty("server", &server);
     view.rootContext()->setContextProperty("orderManager", &orderManager);
     view.rootContext()->setContextProperty("ordersave", &ordersave);
+    view.rootContext()->setContextProperty("printOrder", &printOrder);
 
     // Begin Issue #5, lijunliang, 2012-04-05 //
     view.rootContext()->setContextProperty("systemClock", &systemClock);

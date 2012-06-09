@@ -11,7 +11,8 @@ SOURCES += \
     client.cpp \
     devicemanager.cpp \
     digitalclock.cpp \
-    ordersave.cpp
+    ordersave.cpp \
+    print.cpp
 
 OTHER_FILES += \
     qml/login.qml \
@@ -59,7 +60,8 @@ HEADERS += \
     client.h \
     devicemanager.h \
     digitalclock.h \
-    ordersave.h
+    ordersave.h \
+    print.h
 
 
 
