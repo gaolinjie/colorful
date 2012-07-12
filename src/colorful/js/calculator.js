@@ -64,17 +64,18 @@ function changeAddMenuData() {
     db.transaction(
         function(tx) {
             //tx.executeSql('DROP TABLE sumMenuList');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER,printname TEXT,printbool INTEGER,cookbool INTEGER)');
             //var rs = tx.executeSql('SELECT * FROM sumMenuList ORDER BY id');
             var rs = tx.executeSql('SELECT * FROM sumMenuList WHERE type = ?', [Global.addMenuType]);
             var index = 0;
             if (rs.rows.length > 0) {
                 while (index < rs.rows.length) {
                     var item0 = rs.rows.item(index);
-                    addMenuGrid.model.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,"type":item0.type});
+                    addMenuGrid.model.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,
+                                                 "type":item0.type,"printname":item0.printname,"printbool":item0.printbool,"cookbool":item0.cookbool});
                     index++;
-                }
-             }
+                 }
+              }
            }
        )
  }
@@ -91,7 +92,8 @@ function addMenuBack() {
             if (rs.rows.length > 0) {
                 while (index < rs.rows.length) {
                     var item0 = rs.rows.item(index);
-                    addMenuGrid.model.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,"type":item0.type});
+                    addMenuGrid.model.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,
+                                                 "type":item0.type,"printname":item0.printname,"printbool":item0.printbool,"cookbool":item0.cookbool});
                     index++;
                 }
              }

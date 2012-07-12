@@ -1,6 +1,6 @@
 .pragma library
 
-var orderNO
+var orderNO="0"
 var oldorderNO=""
 var displayText = ""
 var pay = "0"
@@ -26,6 +26,9 @@ var gorderItemsName
 var gorderItemsPrice
 var gorderItemsNum
 var gorderItemsType
+var gorderItemsprintname
+var gprintbool    ////是否要打印到厨房
+var gcookbool    ////是否已发送至厨房烹饪
 
 var gorderTotalPrice
 var gorderDiscount

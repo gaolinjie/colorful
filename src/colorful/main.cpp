@@ -23,7 +23,9 @@ int main(int argc, char *argv[])
     QApplication::setGraphicsSystem("raster");
     QApplication a(argc, argv);
 
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+    //QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+
 
     QString privatePathQt(QApplication::applicationDirPath());
     QString path(privatePathQt);

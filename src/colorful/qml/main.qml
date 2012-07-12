@@ -18,6 +18,7 @@ Image {
     signal mainUpdateItemsignal()
     signal initialOrderList()
     signal mainDiaJumpsignal()
+    signal mainCooksignal()
     function doOp(operation) { CalcEngine.doOperation2(operation) }
 
     Connections {
@@ -149,6 +150,7 @@ Image {
                     newOrderButton.height = 50
                     modifyButton.height = 50
                     addButton.height = 50
+                    cookButton.height = 50
                 }
             }
         }
@@ -181,6 +183,7 @@ Image {
                     newOrderButton.height = 0
                     modifyButton.height = 0
                     addButton.height = 0
+                    cookButton.height = 0
                 }
             }
         }
@@ -382,9 +385,9 @@ Image {
                opacity: 1
                Button {
                    id: addButton
-                   width: 120; height: 50
+                   width: 110; height: 50
                    anchors.top:parent.top; anchors.topMargin: 5
-                   anchors.right:parent.right; anchors.rightMargin: 117
+                   anchors.left:parent.left; anchors.leftMargin: 60
                    color: 'red'
                    operation: "增加菜品"
                    textSize: 22
@@ -394,6 +397,20 @@ Image {
                         rightbord.x = 1024
                         leftbord.x = 1024
 
+                   }
+               }
+               Button {
+                   id: cookButton
+                   width: 110; height: 50
+                   anchors.top:parent.top; anchors.topMargin: 5
+                   anchors.right:parent.right; anchors.rightMargin: 60
+                   color: 'red'
+                   operation: "烹饪菜品"
+                   textSize: 22
+
+                   onOperate: {
+                       printOrder.printMenutoKitchen(Global.orderNO)
+                       mainCooksignal()
                    }
                }
          }
@@ -857,6 +874,8 @@ Image {
                 //Global.orderNO = -1
                 Global.oldorderNO = ""
                 Global.gorderIndex = 0
+                orderList.loadOrderList()
+                itemList.loadItemsData()
                 server.sendRefreshUiSignal()
             }
         }
@@ -1005,12 +1024,12 @@ Image {
                 onPressed: {
                     addBackButton.source = "qrc:/images/left-Green.png"
                 }
-                onReleased:
-                           {
+                onReleased: {
                     addBackButton.source = "qrc:/images/left-Yellow.png"
                     addMenuItem.y = 768
                     rightbord.x = 630
                     leftbord.x = 15
+                 //   addMenuGrid.saveSumMenuData()
                     Global.addMenuType = 1                    
                  //   addMenuGrid.source = ""
                     CalcEngine.addMenuBack()
@@ -1180,7 +1199,7 @@ Image {
              anchors.left: parent.left; anchors.leftMargin: 10
              anchors.top: parent.top; anchors.topMargin: 15
              Component.onCompleted: addMenuGrid.loadSumMenuData()
-             Component.onDestruction: addMenuGrid.saveSumMenuData()  //此时保存的可能只是一种类型的数据，因此不能保存
+            // Component.onDestruction: addMenuGrid.saveSumMenuData()  //此时保存的可能只是一种类型的数据，因此不能保存
          }
        /*  Loader {
               id: addMenuGrid

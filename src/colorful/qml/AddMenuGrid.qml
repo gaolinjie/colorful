@@ -38,7 +38,10 @@ GridView {
                    Global.gorderItemsName =name
                    Global.gorderItemsPrice =price
                    Global.gorderItemsType = type
-                   addMenuGrid.sendAddsignal()
+                   Global.gorderItemsprintname = printname
+                   Global.gprintbool = printbool
+                   Global.gcookbool = 0
+                   if(Global.oldorderNO != "")addMenuGrid.sendAddsignal()
                  }
             }
 
@@ -73,75 +76,77 @@ GridView {
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE sumMenuList');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER,printname TEXT,printbool INTEGER,cookbool INTEGER)');
                 //var rs = tx.executeSql('SELECT * FROM sumMenuList ORDER BY id');
                 var rs = tx.executeSql('SELECT * FROM sumMenuList WHERE type = ?', [Global.addMenuType]);
                 var index = 0;
                 if (rs.rows.length > 0) {
+                    addMenuModel.clear();
                     while (index < rs.rows.length) {
                         var item0 = rs.rows.item(index);
-                        addMenuModel.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,"type":item0.type});
+                        addMenuModel.append({"name": item0.name, "image": item0.image, "detail": item0.detail, "price": item0.price,
+                                                "type":item0.type,"printname":item0.printname,"printbool":item0.printbool,"cookbool":item0.cookbool});
                         index++;
                     }
                 } else {
-                    addMenuModel.append({"name": "白菜心拌蜇头", "image": "", "detail": "此菜”", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "香拌豆腐丝", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "凉拌双耳", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "刺身凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":2});
-                    addMenuModel.append({"name": "夫妻肺片", "image": "", "detail": "此菜", "price": 10.5,"type":2});
-                    addMenuModel.append({"name": "干拌牛舌", "image": "", "detail": "此菜", "price": 10.0,"type":2});
-                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2});
-                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "姜汁皮蛋", "image": "", "detail": "此菜", "price": 10.0,"type":3});
-                    addMenuModel.append({"name": "酱香猪蹄", "image": "", "detail": "此菜", "price": 10.5,"type":3});
-                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3});
-                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "干拌牛舌", "image": "", "detail": "此菜", "price": 10.0,"type":2});
-                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2});
-                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "姜汁皮蛋", "image": "", "detail": "此菜", "price": 10.0,"type":3});
-                    addMenuModel.append({"name": "酱香猪蹄", "image": "", "detail": "此菜", "price": 10.5,"type":3});
-                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3});
-                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3});
-                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2});
-                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "香拌豆腐丝", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "凉拌双耳", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":1});
-                    addMenuModel.append({"name": "刺身凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1});
-                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":4});
-                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":4});
-                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":4});
-                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":4});
-                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":4});
-                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":5});
-                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":5});
-                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":5});
-                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":5});
-                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":5});
-                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":6});
-                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":6});
-                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":7});
-                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":7});
-                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":7});
+                    addMenuModel.append({"name": "白菜心拌蜇头", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "香拌豆腐丝", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "凉拌双耳", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "刺身凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":2,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "夫妻肺片", "image": "", "detail": "此菜", "price": 10.5,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "干拌牛舌", "image": "", "detail": "此菜", "price": 10.0,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "姜汁皮蛋", "image": "", "detail": "此菜", "price": 10.0,"type":3,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "酱香猪蹄", "image": "", "detail": "此菜", "price": 10.5,"type":3,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "干拌牛舌", "image": "", "detail": "此菜", "price": 10.0,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"热菜","cookbool":0});
+                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "姜汁皮蛋", "image": "", "detail": "此菜", "price": 10.0,"type":3,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "酱香猪蹄", "image": "", "detail": "此菜", "price": 10.5,"type":3,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白切鸡", "image": "", "detail": "此菜", "price": 10.5,"type":3,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰镇芥兰", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "豆豉多春鱼", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"热菜","cookbool":0});
+                    addMenuModel.append({"name": "干拌顺风", "image": "", "detail": "此菜", "price": 10.5,"type":2,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "怪味牛腱", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "红心鸭卷", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "香拌豆腐丝", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "凉拌双耳", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "刺身凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":1,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":4,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":4,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":4,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":4,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":4,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":5,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":5,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":5,"printname":"GP-H80250 Series","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":5,"printname":"热菜","printbool":1,"cookbool":0});
+                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":5,"printname":"GP-H80250 Series","printbool":0,"cookbool":0});
+                    addMenuModel.append({"name": "冰梅凉瓜", "image": "", "detail": "此菜", "price": 10.5,"type":6,"printname":"GP-H80250 Series","printbool":0,"cookbool":0});
+                    addMenuModel.append({"name": "白灵菇扣鸭掌", "image": "", "detail": "此菜", "price": 10.5,"type":6,"printname":"热菜","printbool":0,"cookbool":0});
+                    addMenuModel.append({"name": "朝鲜辣白菜", "image": "", "detail": "此菜", "price": 10.0,"type":7,"printname":"GP-H80250 Series","printbool":0,"cookbool":0});
+                    addMenuModel.append({"name": "陈皮兔肉", "image": "", "detail": "此菜", "price": 10.5,"type":7,"printname":"热菜","printbool":0,"cookbool":0});
+                    addMenuModel.append({"name": "川北凉粉", "image": "", "detail": "此菜", "price": 10.0,"type":7,"printname":"GP-H80250 Series","printbool":0,"cookbool":0});
                 }
             }
         )
@@ -151,11 +156,11 @@ GridView {
         db.transaction(
             function(tx) {
                 tx.executeSql('DROP TABLE sumMenuList');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER,printname TEXT,printbool INTEGER,cookbool INTEGER)');
                 var index = 0;
                 while (index < addMenuModel.count) {
                     var item = addMenuModel.get(index);
-                    tx.executeSql('INSERT INTO sumMenuList VALUES(?,?,?,?,?)', [item.name, item.image, item.detail, item.price, item.type]);
+                    tx.executeSql('INSERT INTO sumMenuList VALUES(?,?,?,?,?,?,?,?)', [item.name, item.image, item.detail, item.price, item.type,item.printname,item.printbool,item.cookbool]);
                     index++;
                 }
             }

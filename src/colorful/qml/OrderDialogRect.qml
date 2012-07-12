@@ -3,7 +3,7 @@ import "../js/global.js" as Global
 import "../js/calculator.js" as CalcEngine
 
 Item {
-    id: orderRect
+    id: orderDialogRect
     width: 410; height: 695
 
     function doOp(operation) { CalcEngine.doOperation3(operation) }
@@ -93,7 +93,7 @@ Item {
     }
 
     Rectangle {
-        id: rect
+        id: orderRect
         width: 410; height: 695
         color: "black"
         smooth: true

@@ -176,9 +176,9 @@ ListView {
                             index++;
                         }
                     } else {
-                     //   Global.orderNO = -1 // 该类别的orderlist无数据，置当前orderNO为无效数据
 
-                        ordersModel.append({"orderNO": "120212001",
+                       Global.orderNO = 0;
+                       /* ordersModel.append({"orderNO": "120212001",
                                             "seatNO": "18",
                                             "mac":"0d:02:03:04",
                                             "date": "2012-02-12",
@@ -194,7 +194,7 @@ ListView {
                                             "discount": "10",
                                             "total": "200",
                                             "pay": "1"});
-                        saveOrderList();
+                        saveOrderList();*/
                     }
                 }
             )
@@ -290,8 +290,16 @@ ListView {
         }
     }
     function updateText(){
-          sumText.text = ordersModel.get(Global.gorderIndex).total
-          discText.text = ordersModel.get(Global.gorderIndex).discount
+        if (ordersModel.count>0)
+          {
+             sumText.text = ordersModel.get(Global.gorderIndex).total
+             discText.text = ordersModel.get(Global.gorderIndex).discount
+          }
+        else
+          {
+             sumText.text = 0;
+             discText.text = 0;
+          }
     }
 }
 
