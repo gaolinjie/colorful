@@ -119,14 +119,14 @@ ListView {
                     source: "qrc:/images/minus.png"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: itemRect.left; anchors.rightMargin: 5
-                    visible: wraper.ListView.isCurrentItem && Global.pay==0
+                    visible: wraper.ListView.isCurrentItem && Global.pay ==0
                     MouseArea {
                         anchors.fill: parent
                         onPressed: {
                         //    wraper.ListView.view.model.remove(index)
                         //    wraper.ListView.view.saveItemsData()
                         //    wraper.ListView.view.updateOrderListData()
-                            //console.log(Global.orderNo);
+                        //    console.log(Global.orderNo)
                             wraper.ListView.view.minusItemData()
                             wraper.ListView.view.updateOrderListData()
                         }
@@ -162,7 +162,7 @@ ListView {
             db.transaction(
                 function(tx) {
                     //tx.executeSql('DROP TABLE orderItems');
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key,name TEXT, price REAL, num INTEGER, type INTEGER,printname TEXT,printbool INTEGER,cookbool INTEGER)');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key,name TEXT, price REAL, num INTEGER, type TEXT,printname TEXT,printbool INTEGER,cookbool INTEGER)');
                     var rs = tx.executeSql('SELECT * FROM orderItems WHERE orderNO = ?', [Global.orderNO]);
                     var index = 0;
                    // if (rs.rows.length > 0) {
@@ -179,43 +179,6 @@ ListView {
 
                             index++;
                         }
-                   /* } else {
-                        itemsModel.append({"orderNO": "120212001",
-                                           "name": "白菜心拌蜇头",
-                                           "suborderNO":1,
-                                           "price": 10.0,
-                                              "num": 4});
-                        itemsModel.append({"orderNO": "120212001",
-                                           "name": "白灵菇扣鸭掌",
-                                           "suborderNO":2,
-                                           "price": 10.5,
-                                              "num": 2});
-                        itemsModel.append({"orderNO": "120212001",
-                                           "name": "拌豆腐丝",
-                                           "suborderNO":3,
-                                           "price": 12.5,
-                                              "num": 2});
-                        itemsModel.append({"orderNO": "120212002",
-                                           "name": "陈皮兔肉",
-                                           "suborderNO":1,
-                                           "price": 13.0,
-                                              "num": 1});
-                        itemsModel.append({"orderNO": "120212002",
-                                           "name": "川北凉粉",
-                                           "suborderNO":2,
-                                           "price": 22.5,
-                                              "num": 1});
-                        itemsModel.append({"orderNO": "120212002",
-                                           "name": "刺身凉瓜",
-                                           "suborderNO":3,
-                                           "price": 32.0,
-                                              "num": 1});
-                        itemsModel.append({"orderNO": "120212002",
-                                           "name": "豆豉多春鱼",
-                                           "suborderNO":4,
-                                           "price": 10.0,
-                                              "num": 1});
-                    }*/
                 }
             )
             itemsList.currentIndex = 0;
@@ -226,7 +189,7 @@ ListView {
             db.transaction(
                 function(tx) {
                     tx.executeSql('DROP TABLE orderItems');
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key,name TEXT, price REAL, num INTEGER, type INTEGER, printname TEXT, printbool INTEGER, cookbool INTEGER)');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key,name TEXT, price REAL, num INTEGER, type TEXT, printname TEXT, printbool INTEGER, cookbool INTEGER)');
                     var index = 0;
                     while (index < itemsModel.count) {
                         var item = itemsModel.get(index);

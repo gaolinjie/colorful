@@ -30,5 +30,6 @@
         <file>qml/OrderDialogRect.qml</file>
         <file>qml/OrderDialog.qml</file>
         <file>qml/KeyBoard.qml</file>
+        <file>qml/SumCategoryList.qml</file>
     </qresource>
 </RCC>

@@ -64,7 +64,7 @@ function changeAddMenuData() {
     db.transaction(
         function(tx) {
             //tx.executeSql('DROP TABLE sumMenuList');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER,printname TEXT,printbool INTEGER,cookbool INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type TEXT,printname TEXT,printbool INTEGER,cookbool INTEGER)');
             //var rs = tx.executeSql('SELECT * FROM sumMenuList ORDER BY id');
             var rs = tx.executeSql('SELECT * FROM sumMenuList WHERE type = ?', [Global.addMenuType]);
             var index = 0;
@@ -85,7 +85,7 @@ function addMenuBack() {
     db.transaction(
         function(tx) {
             //tx.executeSql('DROP TABLE sumMenuList');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS sumMenuList(name TEXT, image TEXT, detail TEXT, price REAL,type TEXT,printname TEXT,printbool INTEGER,cookbool INTEGER)');
             //var rs = tx.executeSql('SELECT * FROM sumMenuList ORDER BY id');
             var rs = tx.executeSql('SELECT * FROM sumMenuList WHERE type = ?', [Global.addMenuType]);
             var index = 0;

@@ -48,7 +48,8 @@ OTHER_FILES += \
     qml/OrderDialog.qml \
     qml/KeyBoard.qml \
     qml/DialogRect.qml.autosave \
-    qml/PosMenuModel.qml.autosave
+    qml/PosMenuModel.qml.autosave \
+    qml/SumCategoryList.qml
 
 RESOURCES += \
     resource.qrc

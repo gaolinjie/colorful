@@ -19,6 +19,7 @@ Image {
     signal initialOrderList()
     signal mainDiaJumpsignal()
     signal mainCooksignal()
+    signal mainCategoryChangeSignal()
     function doOp(operation) { CalcEngine.doOperation2(operation) }
 
     Connections {
@@ -75,6 +76,13 @@ Image {
             orderList.currentIndex =Global.gorderIndex
             itemList.loadItemsData()
             orderList.updateText()
+        }
+    }
+    Connections {
+        id: sumCategoryListConnect
+        target: sumCategoryList
+        onCategoryChangeSignal: {
+            mainCategoryChangeSignal()
         }
     }
 
@@ -396,7 +404,9 @@ Image {
                         addMenuItem.y = 490
                         rightbord.x = 1024
                         leftbord.x = 1024
-
+                       sumCategoryList.getCategoryList();
+                       sumCategoryList.getCategoryModel();
+                       sumCategoryList.getfistCategory();
                    }
                }
                Button {
@@ -1001,8 +1011,17 @@ Image {
         }
         Rectangle{
             width: 1024; height: 278
-            opacity: 0.5
-            color:"white"
+            opacity: 1
+            color:"black"
+        }
+
+        AddMenuGrid{
+            id: addMenuGrid
+           // signal addsignal(string lname, double lprice, int ltype)
+            anchors.left: parent.left; anchors.leftMargin: 10
+            anchors.top: parent.top; anchors.topMargin: 15
+            Component.onCompleted: addMenuGrid.loadSumMenuData()
+           // Component.onDestruction: addMenuGrid.saveSumMenuData()  //此时保存的可能只是一种类型的数据，因此不能保存
         }
         Rectangle{
         id: addTitle
@@ -1011,12 +1030,29 @@ Image {
         anchors.bottom: parent.bottom; anchors.bottomMargin: 0
         Rectangle {
             id: titleBackground
-            anchors.fill: addTitle; radius: 0; color: "grey"; opacity: 0.5
+            anchors.fill: addTitle; radius: 0; color: "black"; opacity: 1
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                               color: Qt.rgba(0.8,0.8,0.8,0.8) }
+                GradientStop { position: 0.1; color: "black" }
+                GradientStop { position: 1.0; color: "black" }
+                    }
+               }
+        SumCategoryList{
+             id: sumCategoryList
+             width: 1024-addBackButton.width; height: 48
+             anchors.left: parent.left
+             anchors.bottom: parent.bottom
+             Component.onCompleted: {
+                 sumCategoryList.getCategoryList();
+                 sumCategoryList.getCategoryModel();
+                 sumCategoryList.getfistCategory();
+             }
         }
-         Image {
+        Image {
             id: addBackButton
             source: "qrc:/images/left-Yellow.png"
-         //   width: 60; height:50
+            width: 60; height:50
             anchors.right: parent.right; anchors.rightMargin: 0
             anchors.bottom: parent.bottom; anchors.bottomMargin: 0
             MouseArea {
@@ -1030,183 +1066,11 @@ Image {
                     rightbord.x = 630
                     leftbord.x = 15
                  //   addMenuGrid.saveSumMenuData()
-                    Global.addMenuType = 1                    
-                 //   addMenuGrid.source = ""
-                    CalcEngine.addMenuBack()
+                 //   CalcEngine.addMenuBack()
                 }
              }
-          }
+           }
         }
-
-         Button1 {
-            id: addMenuButton1
-            width: 100; height: 50
-            anchors.left: parent.left; anchors.leftMargin:0
-            anchors.bottom: parent.bottom; anchors.bottomMargin:0
-            operation: "特色菜品"
-            textSize: 22
-            color: "blue"
-            buttonNo: 1
-
-            onOperate: {
-                  addMenuButton1.color = "blue"
-                  addMenuButton2.color = "green"
-                  addMenuButton3.color = "green"
-                  addMenuButton4.color = "green"
-                  addMenuButton5.color = "green"
-                  addMenuButton6.color = "green"
-                  addMenuButton7.color = "green"
-                  Global.addMenuType = buttonNo
-                  CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton2
-            width: 100; height: 50
-            anchors.left: addMenuButton1.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "畅销菜品"
-            textSize: 22
-            color: "green"
-            buttonNo: 2
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "blue"
-                addMenuButton3.color = "green"
-                addMenuButton4.color = "green"
-                addMenuButton5.color = "green"
-                addMenuButton6.color = "green"
-                addMenuButton7.color = "green"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton3
-            width: 100; height: 50
-            anchors.left: addMenuButton2.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "酒水"
-            textSize: 22
-            color: "green"
-            buttonNo: 3
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "green"
-                addMenuButton3.color = "blue"
-                addMenuButton4.color = "green"
-                addMenuButton5.color = "green"
-                addMenuButton6.color = "green"
-                addMenuButton7.color = "green"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton4
-            width: 100; height: 50
-            anchors.left: addMenuButton3.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "茶点"
-            textSize: 22
-            color: "green"
-            buttonNo: 4
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "green"
-                addMenuButton3.color = "green"
-                addMenuButton4.color = "blue"
-                addMenuButton5.color = "green"
-                addMenuButton6.color = "green"
-                addMenuButton7.color = "green"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton5
-            width: 100; height: 50
-            anchors.left: addMenuButton4.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "面点"
-            textSize: 22
-            color: "green"
-            buttonNo: 5
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "green"
-                addMenuButton3.color = "green"
-                addMenuButton4.color = "green"
-                addMenuButton5.color = "blue"
-                addMenuButton6.color = "green"
-                addMenuButton7.color = "green"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton6
-            width: 100; height: 50
-            anchors.left: addMenuButton5.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "海鲜"
-            textSize: 22
-            color: "green"
-            buttonNo: 6
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "green"
-                addMenuButton3.color = "green"
-                addMenuButton4.color = "green"
-                addMenuButton5.color = "green"
-                addMenuButton6.color = "blue"
-                addMenuButton7.color = "green"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-         Button1 {
-            id: addMenuButton7
-            width: 100; height: 50
-            anchors.left: addMenuButton6.right; anchors.leftMargin:2
-            anchors.bottom: addMenuButton1.bottom; anchors.bottomMargin:0
-            operation: "中厨"
-            textSize: 22
-            color: "green"
-            buttonNo: 7
-
-            onOperate: {
-                addMenuButton1.color = "green"
-                addMenuButton2.color = "green"
-                addMenuButton3.color = "green"
-                addMenuButton4.color = "green"
-                addMenuButton5.color = "green"
-                addMenuButton6.color = "green"
-                addMenuButton7.color = "blue"
-                Global.addMenuType = buttonNo
-                CalcEngine.changeAddMenuData()
-            }
-         }
-
-         AddMenuGrid{
-             id: addMenuGrid
-            // signal addsignal(string lname, double lprice, int ltype)
-             anchors.left: parent.left; anchors.leftMargin: 10
-             anchors.top: parent.top; anchors.topMargin: 15
-             Component.onCompleted: addMenuGrid.loadSumMenuData()
-            // Component.onDestruction: addMenuGrid.saveSumMenuData()  //此时保存的可能只是一种类型的数据，因此不能保存
-         }
-       /*  Loader {
-              id: addMenuGrid
-              anchors.left: parent.left; anchors.leftMargin: 10
-              anchors.top: parent.top; anchors.topMargin: 15
-              source: "qrc:/qml/AddMenuGrid.qml"
-          }*/
      }
 
     OrderDialogRect{

@@ -234,7 +234,7 @@ ListView {
         db.transaction(
             function(tx) {
                 //tx.executeSql('DROP TABLE orderItems');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key, name TEXT, price REAL, num INTEGER)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS orderItems(orderNO INTEGER key,name TEXT, price REAL, num INTEGER,type TEXT,printname TEXT,printbool INTEGER,cookbool INTEGER)');
                 var rs = tx.executeSql('SELECT * FROM orderItems WHERE orderNO = ?', [Global.orderNO]);
                 var index = 0;
                 Global.gorderTotalPrice = 0;
